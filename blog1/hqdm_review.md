@@ -11,7 +11,7 @@ This blog is not merely a book review; it is structured into four main sections:
 
 The fourth section is the most extensive, reflecting my more significant experience in that area. I leave a detailed review of the rest of the book to others.
 
-# About The Author
+# About The Author of HQDM
 
 Dr Matthew West OBE, who sadly passed away in mid-2023, was a leading figure in data modelling. I believe he would have welcomed the opportunity to discuss some of the issues I raise in the experiences section below. More information about Dr West can be found [on his website](https://www.matthew-west.org.uk/), which offers insight into his professional work and personal interests. One aphorism from the site that resonates with me is: *"Don't let your principles prevent you from doing what's right."* It's important to note that Matthew never intended for HQDM to be implemented in code, and many of the criticisms in the experiences section stem from attempts to do so. Therefore, I believe HQDM itself is sound, and most of the issues I describe arise in the implementations.
 
@@ -191,3 +191,15 @@ We have journeyed through an introduction to Matthew's book and the main concept
 I have enjoyed learning about and working with HQDM over recent years and I wish I had spent some time discussing it with Matthew; it has taught me a lot about modelling and made me think very deeply about the nature of reality. I have come to the conclusion that Matthew was right all along about one thing — we shouldn't try to implement HQDM precisely in code. Instead, we should create data structures that are suitable for writing efficient, compact, maintainable code, and for efficient data storage and retrieval, but which also enable changes over time to be recorded in a way that allows the 4D entities to be recreated if needed. Essentially, this means reifying relationships into entities with timestamps that record when the real-world relationship started and when it ended (rather than when the corresponding data record was created or updated). The participants in those relationships need to record their roles in the relationship, which can simply be via an attribute name, as in most conventional non-HQDM systems that use relationship tables. Much of the complexity of HQDM comes from its generality, but when implemented in a real system it can be greatly simplified since many of those systems don't need such generality. For data exchange, it would make good sense to extend HQDM for new domains agreed between the communicating parties, so that ETL functions (Extract, Transform, Load) are easier to implement.
 
 As for the future of HQDM, it remains to be seen how it (and data modelling in general) will work alongside advances in AI and Machine Learning technology. Will HQDM become irrelevant or will AI and HQDM work together? It will be interesting to see how things turn out.
+
+# Acknowledgements
+
+I would like to thank Matthew for his work on HQDM and for writing the book that has provided the framework for this article. I would also like to thank the many contributors to the MagmaCore library and the wider open-source community for their work on making HQDM more accessible and usable.
+
+Many thanks to [Jonathan Eyre](https://www.linkedin.com/in/jonathaneyre/) at the [AMRC](https://www.linkedin.com/company/amrc/) and [Alastair Cook](https://www.linkedin.com/in/alastair-cook-75a914b/) for their detailed review comments.
+
+Approximately 20% of this article was written with the help of OpenAI's ChatGPT. ChatGPT has been trained on the content of the HQDM book and should be able to answer questions about its contents.
+
+The colourful diagrams in this article were created using the [Napkin](https://www.napkin.ai/) diagramming tool.
+
+The bulk of this article was written with the aid of Cursor IDE which improved productivity and assisted with producing the two diagrams in the last section of the article.
