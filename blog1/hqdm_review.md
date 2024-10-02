@@ -174,6 +174,16 @@ For classes and kinds in HQDM, which are both *sets* in a mathematical sense, th
 
 HQDM defines identity for classes and spatio-temporal-extents, but not for 'things' which implies that 'thing' represents purely abstract existence and should never need to be used in a program. In the worst case, I expect it should be possible to know whether an entity is a class or a spatio-temporal-extent, so those entity types should be used in the absence of any more-specific knowledge about the entity.
 
+One anomaly to be aware of is that, since two entities with the same spatio-temporal-extent are the same entity, there is a problem when a state is a participant in two associations. The first diagram below shows what is intended:
+
+![states in two associations](blog_states_1.svg)
+
+However if `state1` and `state2` are 'the same', due to the HQDM criteria of identity, then the next diagram shows what actually happens - we end up with one state having two roles in two associations which makes it impossible to tell which role applies to which association:
+
+![states in two associations](blog_states_2.svg)
+
+Whether this would ever happen in practice is debatable, but it is worth being aware of the potential problem. The problem is easily overcome when implemented in code however, because code cannot use the same idea of identity and we have to use IDs instead, therfore we can force the model to appear correctly as in the first diagram above. 
+
 # Summary and Conclusions
 
 We have journeyed through an introduction to Matthew's book and the main concepts presented in the top-level ontology, as well as some of the issues that arise when trying to implement the model as presented. I had some difficulties accepting all of the modelling decisions and ontological commitments made by Matthew, although I have accepted them over the last few years while trying to develop systems using the model. Many of the difficulties I have raised are entirely due to the mismatch between conceptual modelling and practical implementations, which I suspect Matthew knew about all along since he didn't expect anyone to actually try to implement HQDM. Aside from problems implementing the TLO directly, all of the other advice in the book about data modelling for correctness and information exchange is rock solid.
