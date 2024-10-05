@@ -8,6 +8,7 @@
         <title>AOSD Ltd</title>
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
         <link rel="stylesheet" type="text/css" href="/styles.css">
+        <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
     </head>
 
     <body>
@@ -22,13 +23,12 @@
         </header>
         <main>
             <div class="intro">
-                <h1>ChatGPT and Ontology</h1>
-                <p>An informal exploration of Ontology within ChatGPT</p>
+                <h1>Simpler HQDM</h1>
+                <p>A simpler alternative to HQDM, more suitable for programmers</p>
             </div>
             <div class="about-me" id="blog">
                 <div class="about-me-text">
-                  <h2>Coming soon...</h2>
-                  <p>This blog will explore what ChatGPT 'knows' about Ontology and whether it undertands the world in similar ways to humans.</p>
+                <div id="markdown-content"></div>
                 </div>
             </div>
         </main>
@@ -52,4 +52,17 @@
         </footer>
     </body>
 
+
+        <script>
+async function loadMarkdown(file) {
+  const res = await fetch('simpler_hqdm.md');
+  const html = await res.text();
+  return html;
+}
+
+loadMarkdown().then((markdownText)=>{
+  const htmlContent = marked.parse(markdownText);
+  document.getElementById('markdown-content').innerHTML = htmlContent;
+})
+        </script>
 </html>

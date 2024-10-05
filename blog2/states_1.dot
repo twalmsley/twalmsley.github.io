@@ -1,0 +1,23 @@
+digraph G {
+    Car1;
+    CarState1;
+    Person1;
+    PersonState1;
+    OwnerRole;
+    OwnedRole;
+    CarOwnership;
+
+    CarState1 -> Car1[label="temporal_part_of"];
+    CarState1 -> CarOwnership[label="participant_in"];
+    CarState1 -> OwnedRole[label="member_of_kind"];
+    PersonState1 -> Person1[label="temporal_part_of"];
+    PersonState1 -> CarOwnership[label="participant_in"];
+    PersonState1 -> OwnerRole[label="member_of_kind"];
+
+    Car2;
+    Person2;
+    CarOwnership2;
+
+    CarOwnership2 -> Car2[label="owned"];
+    CarOwnership2 -> Person2[label="owner"];
+}
