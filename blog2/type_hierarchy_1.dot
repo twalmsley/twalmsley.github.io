@@ -1,0 +1,20 @@
+digraph G {
+    node [shape=box, style="filled,rounded", fillcolor=lightgray];
+    rankdir=BT;
+    TemporallyBounded -> Object;
+    Activity -> Individual;
+    Aggregation -> Individual;
+    "Class<T>" -> UniquelyIdentifiable;
+    Individual -> TemporallyBounded;
+    Individual -> UniquelyIdentifiable;
+    "Naming<T>" -> UniquelyIdentifiable;
+    "Naming<T>" -> TemporallyBounded;
+    PeriodOfTime -> TemporallyBounded;
+    PointInTime -> Object;
+    UniquelyIdentifiable -> Object;
+    PossibleWorld -> Individual;
+    Scalar -> Object;
+    "State<T>" -> TemporallyBounded;
+    "State<T>" -> UniquelyIdentifiable;
+    Unit -> UniquelyIdentifiable;
+}

@@ -1,0 +1,40 @@
+digraph G {
+    node [shape=box, style="filled,rounded", fillcolor=lightgray];
+    rankdir=BT;
+    
+    Instant[fillcolor=lightblue]
+    String[fillcolor=lightblue]
+    Number[fillcolor=lightblue]
+    "Set<T>"[fillcolor=lightblue]
+    
+    Aggregation -> "Set<T>"[label="members"];
+    PossibleWorld -> "Set<T>"[label="members"];
+    "Class<T>" -> "Set<T>"[label="members"];
+    "Naming<T>" -> T[label="name"];
+    "Naming<T>" -> UniquelyIdentifiable[label="named"];
+    PointInTime -> Instant[label="when"];
+    Scalar -> Unit[label="unit"];
+    Scalar -> Number[label="value"];
+    "State<T>" -> Individual[label="individual"];
+    TemporallyBounded -> Event[label="beginning"];
+    TemporallyBounded -> Event[label="ending"];
+    UniquelyIdentifiable -> String[label="identifier"];
+    Unit -> String[label="name"];
+
+
+
+    Activity -> Individual[style=dashed, arrowhead=onormal, arrowsize=2];
+    Aggregation -> Individual[style=dashed, arrowhead=onormal, arrowsize=2];
+    "Class<T>" -> UniquelyIdentifiable[style=dashed, arrowhead=onormal, arrowsize=2];
+    Event -> UniquelyIdentifiable[style=dashed, arrowhead=onormal, arrowsize=2];
+    Individual -> TemporallyBounded[style=dashed, arrowhead=onormal, arrowsize=2];
+    Individual -> UniquelyIdentifiable[style=dashed, arrowhead=onormal, arrowsize=2];
+    "Naming<T>" -> UniquelyIdentifiable[style=dashed, arrowhead=onormal, arrowsize=2];
+    "Naming<T>" -> TemporallyBounded[style=dashed, arrowhead=onormal, arrowsize=2];
+    PeriodOfTime -> TemporallyBounded[style=dashed, arrowhead=onormal, arrowsize=2];
+    PossibleWorld -> Individual[style=dashed, arrowhead=onormal, arrowsize=2];
+    "State<T>" -> TemporallyBounded[style=dashed, arrowhead=onormal, arrowsize=2];
+    "State<T>" -> UniquelyIdentifiable[style=dashed, arrowhead=onormal, arrowsize=2];
+    Unit -> UniquelyIdentifiable[style=dashed, arrowhead=onormal, arrowsize=2];
+    PointInTime -> Event[style=dashed, arrowhead=onormal, arrowsize=2];
+}
