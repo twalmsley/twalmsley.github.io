@@ -2,18 +2,18 @@
 ## Introduction
 In this blog post, which is a follow-on from my previous blog post about HQDM, I will attempt to resolve some of the issues I raised, with the aim of producing a simplified and more understandable implementation of HQDM that is close enough to the original so as to be compatible with it. I'm going to start by removing some of the complexities of HQDM, along with an explanation of why they can be removed without loss of generality.
 
-Once the clutter has been removed I will then try to implement HQDM as a library, which may serve as an example to help develop the MagmaCore library further using the principles proved here. It may well turn out that these ideas don't work, or that they make HQDM much less expressive and therefore less widely applicable, but I feel that exploring these ideas is a worthwhile exercise and that it will lead to a better understanding of HQDM and the principles of data modelling in general.
+Once the clutter has been removed I will then try to implement HQDM as a library, which may serve as an example to help develop the MagmaCore library further using the principles demonstrated here. It may well turn out that these ideas don't work, or that they make HQDM much less expressive and therefore less widely applicable, but exploring these ideas is a worthwhile exercise and it will lead to a better understanding of HQDM and the principles of data modelling in general.
 ## HQDM on a Diet
 Firstly, let me remove some concepts from HQDM which, if you're familiar with HQDM, may well be painful initially, but if you follow through the logic I hope you will see that the benefits outweigh the costs.
 ### Implementation Language
 HQDM was originally defined using the EXPRESS and EXPRESS-G data modelling language, while for the MagmaCore library an informal mapping to RDF was produced. I am going to start from a programming language instead and will assume that any future serialisation format for HQDM will preserve the semantics of that programming language, which will then allow implementations in other languages to follow the same semantics in their own way. 
 
-Candidate languages in my mind based on languages I am familiar with are: Java, Haskell, and TypeScript, because this implementation will need to make use of the compile-time type checking features of the language, which I feel is an essential part of data modelling. It will go some way towards ensuring programs create valid data models rather than relying solely on runtime type checking. Given that the [MagmaCore](https://github.com/gchq/MagmaCore) library is written in Java, I will use Java here and then move on to Haskell and TypeScript at a later date.
+Candidate languages in my mind, based on languages I am familiar with, are: Java, Haskell, Rust, C++, and TypeScript, because this implementation will make use of the compile-time type checking features of the language. It will go some way towards ensuring programs create valid data models rather than relying solely on runtime type checking. Given that the [MagmaCore](https://github.com/gchq/MagmaCore) library is written in Java, I will use Java here and then move on to Haskell and TypeScript at a later date.
 ### No Dynamic Extensions
 HQDM provides several mechanisms for extending the model, some of which duplicate existing constructs in the implementation language. For example, the use of `kinds` is the same as adding new entity types in EXPRESS, the use of the `relation` entity type is already covered by the EXPRESS language, while adding sub-types of entities is a given in EXPRESS so does not need to be modelled as a subtype of `relation`. Similarly for `classification`, `aggregation`, and `composition`. I will assume that new entity types will be added as Java interfaces at compile time rather than as runtime data, so that we can take advantage of the compiler's type-checking features.
 
 ### No Explicit Class Hierarchy
-HQDM has a whole type hierarchy defining `class_of_X` for each entity type `X`, where each class is a mathematical Set, but the ability for form arbitrary sets can be more concisely captured using the Java `Set<T>` construct. This hierarchy of classes can be confusing, but when combined with the `member_of` relationship and its variants it also has the problem that the `member_of` relation itself needs modifying to restrict the types to the correct ones. For example, only a `person` can be a `member_of` a `class_of_person`, but the inherited `member_of` must be overridden and redefined to capture this. With Java, a `Set<Person>` doesn't need anything overridden and fits more naturally with the idea that sets know their members, rather than each entity knowing the sets it is a member of. 
+HQDM has a whole type hierarchy defining `class_of_X` for each entity type `X`, where each class is a mathematical Set, but the ability to form arbitrary sets can be more concisely captured using the Java `Set<T>` construct. This hierarchy of classes can be confusing, but when combined with the `member_of` relationship and its variants it also has the problem that the `member_of` relation itself needs to be modified to restrict the types to the correct ones for that level of the hierarchy. For example, only a `person` can be a `member_of` a `class_of_person`, so the inherited `member_of` must be overridden and redefined to capture this. With Java, a `Set<Person>` doesn't need anything overridden and fits more naturally with the idea that sets know their members, rather than each entity knowing the sets it is a member of. 
 
 As a side note, in HQDM classes are immutable mathematical sets, so the entity type `class_of_person`, for example, represents all possible sets of `person` entities, which is an incredibly large set of sets - `class_of_person` is the power set of `person`. Furthermore, it includes all `person` entities, past, present, and future. We can't represent this in any meaningful way in computer programs so we use mutable sets and only keep track of the sets and members we're interested in, creating them as needed. In HQDM, every `thing` is a member of at least one set, i.e. the singleton set containing itself, and while this is true, there is no need to implement this in code.
 
@@ -82,17 +82,13 @@ An Attribute is an alternative way to assign properties to an entity - Propertie
 
 Class is a Set with a type and an identifier, and replaces all 'class_of_X' entity types in HQDM. In Java, 'Class<X>' is just as meaningful as `class_of_X`, which means we don't need to define the latter. This also fremoves the `member_of` relation and it's variants without loss of generality, and overcomes the need to redefine `member_of` deeper in the type hierarchy.
 
-### Event
+### Event and EventBounded
 
-A significant occurrence or happening that marks a transition, beginning, or conclusion, often involving a change in circumstances or state. Events are used as beginning and endings for TemporallyBounded objects.
+A significant occurrence or happening that marks a transition, beginning, or conclusion, often involving a change in circumstances or state. Events are used as beginning and endings for TemporallyBounded objects. Activities are bounded by Events, and Events have a TimePeriod in which they occur, which may be very small if accurately known, or large if there is uncertainty.
 
 ### Individual
 
 An object considered as a single thing, even though it is made up of parts, e.g. a person, a car, etc., for its whole life. 
-
-### PeriodOfTime
-
-There are no PointInTime objects, there are only small time periods in which events can occur. For example, a time stamp may identify a particular day, hour, minute, second, nanosecond, etc. but it will always have a duration of at that time unit, never zero duration. Implementors must commit to time units suitable for their applications' needs.
 
 ### PossibleWorld
 
@@ -101,6 +97,10 @@ A set of individuals considered to be a part of an actual or possible world, e.g
 ### Property
 
 A uniquely identifiable property of a specified type. This should not be used for scalar properties since those should always have specified units. The propery is a set of objects that have the specified property value.
+
+### Role
+
+Represents the role played by some entity in an activity, e.g. the role could be "Prime Minister" in a Membership entity.
 
 ### ScalarProperty and ScalarValue
 
@@ -113,6 +113,10 @@ Although I argued against 'state_of_X' entity types above, I include it here to 
 ### TemporallyBounded
 
 Defines objects that have beginnings and endings in time.
+
+### TimePeriod
+
+There are no PointInTime objects, there are only small time periods in which events can occur. For example, a time stamp may identify a particular day, hour, minute, second, nanosecond, etc. but it will always have a duration of at that time unit, never zero duration. Developers should use appropriate time periods to represent the uncertainty about exactly when some Event occurred.
 
 ### UniquelyIdentifiable
 
