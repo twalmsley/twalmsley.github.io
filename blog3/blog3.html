@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AOSD Ltd</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <link rel="stylesheet" type="text/css" href="/styles.css">
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+</head>
+
+<body>
+    <header class="header">
+        <a href="#" class="logo">AOSD Ltd</a>
+        <nav class="nav-items">
+            <a href="/index.html">Home</a>
+            <a href="/index.html#about">About</a>
+            <a href="/index.html#contact">Contact</a>
+            <a href="/blog.html">Blog</a>
+        </nav>
+    </header>
+    <main>
+        <div class="intro">
+            <h1>An LLM Christmas Plan</h1>
+            <p>Some prompts with answers for a perfect Christmas</p>
+        </div>
+        <div class="about-me" id="blog">
+            <div class="about-me-text">
+                <div>
+                    <h1>Introduction</h1>
+                    <p>In this b;log post I look into how an LLM, ChatGPT in this case, can help with planning a perfect
+                        Christmas holiday, with the first question being: what can CharGPT help with? This post is a
+                        largely fictional scenario, but the prompts used and the responses shown are genuine. This is
+                        mostly just a bit of fun, but you can imagine using similar prompts for all sorts of other
+                        scenarios.</p>
+                </div>
+                <h1>What Can an LLM Help With?</h1>
+                <div id="markdown-content-01"></div>
+                <h1>Planning Christmas Presents</h1>
+                <div id="markdown-content-02"></div>
+                <h1>Christmas Meal Planning</h1>
+                <div id="markdown-content-03"></div>
+                <h1>Preparation and Holiday Activities</h1>
+                <div id="markdown-content-04"></div>
+                <h1>Staying Relaxed and Surviving</h1>
+                <div id="markdown-content-05"></div>
+                <h1>Winding Down Work and Restarting Afterwards</h1>
+                <div id="markdown-content-06"></div>
+            </div>
+        </div>
+    </main>
+    <footer class="footer">
+        <div class="copy">&copy; 2024 AOSD Ltd</div>
+        <div class="bottom-links">
+            <div class="links">
+                <span>More Info</span>
+                <a href="/index.html">Home</a>
+                <a href="/index.html#about">About</a>
+                <a href="/index.html#contact">Contact</a>
+                <a href="/blog.html">Blog</a>
+            </div>
+            <div class="links">
+                <span>Social Links</span>
+                <a href="https://www.linkedin.com/in/tony-walmsley-8540732/"><i class="fab fa-linkedin"></i></a>
+                <a><i class="fab fa-facebook"></i></a>
+                <a><i class="fab fa-twitter"></i></a>
+            </div>
+        </div>
+    </footer>
+</body>
+
+
+<script>
+    async function loadMarkdown(file) {
+        const res = await fetch(file);
+        const html = await res.text();
+        return html;
+    }
+
+    loadMarkdown('01-what-how.md').then((markdownText) => {
+        const htmlContent = marked.parse(markdownText);
+        document.getElementById('markdown-content-01').innerHTML = htmlContent;
+    });
+
+    loadMarkdown('02-presents.md').then((markdownText) => {
+        const htmlContent = marked.parse(markdownText);
+        document.getElementById('markdown-content-02').innerHTML = htmlContent;
+    });
+
+    loadMarkdown('03-Meals.md').then((markdownText) => {
+        const htmlContent = marked.parse(markdownText);
+        document.getElementById('markdown-content-03').innerHTML = htmlContent;
+    });
+
+    loadMarkdown('04-prep-activity-plan.md').then((markdownText) => {
+        const htmlContent = marked.parse(markdownText);
+        document.getElementById('markdown-content-04').innerHTML = htmlContent;
+    });
+
+    loadMarkdown('05-relaxing-times.md').then((markdownText) => {
+        const htmlContent = marked.parse(markdownText);
+        document.getElementById('markdown-content-05').innerHTML = htmlContent;
+    });
+
+    loadMarkdown('06-work.md').then((markdownText) => {
+        const htmlContent = marked.parse(markdownText);
+        document.getElementById('markdown-content-06').innerHTML = htmlContent;
+    })
+</script>
+
+</html>
