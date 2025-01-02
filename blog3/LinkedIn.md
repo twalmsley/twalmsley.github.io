@@ -1,5 +1,5 @@
 
-🌟 **Using an LLM for Holiday Planning for a Productive Start to 2024** 🌟
+🌟 **Using an LLM for Holiday Planning for a Productive Start to 2025** 🌟
 
 As an independent software engineer, I know how challenging it can be to balance work and life during the holiday season—especially when your work is complex and mentally demanding. That’s why I’ve asked ChatGPT for an approach to wrapping up work with a clear head before the holidays and ensuring a smooth, stress-free return in the New Year.
 
