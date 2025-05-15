@@ -70,7 +70,7 @@ The aim is to get Cursor AI to do as much of the coding as possible, because tha
 
 ![Cursor AI Logo](cursor.jpeg)
 
-Before running Cursor, I did use the nuxt command line to initialise a single-page "hello world" project just to get off the ground, then I ran the server in development mode and opened the project directory in the IDE.
+Before running Cursor, I did use the nuxt command line tool to initialise a single-page "hello world" project just to get off the ground, then I ran the server in development mode and opened the project directory in the IDE.
 
 ## How is the Experience?
 
