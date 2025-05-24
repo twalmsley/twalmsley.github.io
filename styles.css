@@ -1,8 +1,13 @@
-@import url('https://fonts.googleapis.com/css2?family=Sriracha&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap');
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
 
 body {
-    margin: 0;
-    box-sizing: border-box;
+    font-family: 'Montserrat', sans-serif;
 }
 
     /* CSS for header */
@@ -10,29 +15,36 @@ body {
         display: flex;
         justify-content: space-between;
         align-items: center;
-        background-color: #f5f5f5;
+        background-color: #ffffff;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        padding: 10px 0;
     }
 
     .header .logo {
-        font-size: 25px;
-        font-family: 'Arial', cursive;
-        color: #000;
+        font-size: 28px;
+        font-family: 'Montserrat', sans-serif;
+        color: #333;
         text-decoration: none;
-        margin-left: 30px;
+        margin-left: 40px;
     }
 
     .nav-items {
         display: flex;
         justify-content: space-around;
         align-items: center;
-        background-color: #f5f5f5;
-        margin-right: 20px;
+        margin-right: 30px;
     }
 
     .nav-items a {
         text-decoration: none;
-        color: #000;
-        padding: 35px 20px;
+        color: #555;
+        padding: 25px 20px;
+        font-weight: bold;
+        transition: color 0.3s ease;
+    }
+
+    .nav-items a:hover {
+        color: #007bff;
     }
 
     /* CSS for main element */
@@ -42,44 +54,55 @@ body {
         justify-content: center;
         align-items: center;
         width: 100%;
-        height: 520px;
-        background: linear-gradient(to bottom, rgba(0, 0, 0, 0.5) 0%, rgba(0, 0, 0, 0.5) 100%), url("https://images.unsplash.com/photo-1587620962725-abab7fe55159?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1031&q=80");
+        min-height: 480px;
+        background: linear-gradient(to bottom, rgba(0, 0, 0, 0.3) 0%, rgba(0, 0, 0, 0.3) 100%), url("https://images.unsplash.com/photo-1587620962725-abab7fe55159?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1031&q=80");
         background-size: cover;
         background-position: center;
         background-repeat: no-repeat;
+        text-align: center;
+        padding: 0 20px;
     }
 
     .intro h1 {
-        font-family: sans-serif;
-        font-size: 60px;
+        font-family: 'Montserrat', sans-serif;
+        font-size: 55px;
         color: #fff;
-        font-weight: bold;
+        font-weight: 700;
         margin: 0;
+        line-height: 1.2;
     }
 
     .intro p {
-        font-size: 20px;
-        color: #d1d1d1;
-        margin: 20px 0;
+        font-size: 18px;
+        color: #f0f0f0;
+        margin: 25px 0;
+        max-width: 600px;
     }
 
     .intro button {
-        background-color: #5edaf0;
-        color: #000;
-        padding: 10px 25px;
+        background-color: #007bff;
+        color: #ffffff;
+        padding: 12px 30px;
         border: none;
-        border-radius: 5px;
-        font-size: 20px;
+        border-radius: 25px;
+        font-size: 18px;
         font-weight: bold;
         cursor: pointer;
-        box-shadow: 0px 0px 20px rgba(255, 255, 255, 0.4)
+        box-shadow: 0px 5px 15px rgba(0, 123, 255, 0.3);
+        transition: background-color 0.3s ease, transform 0.3s ease;
+    }
+
+    .intro button:hover {
+        background-color: #0056b3;
+        transform: translateY(-2px);
     }
 
     .achievements {
         display: flex;
         justify-content: space-around;
-        align-items: center;
-        padding: 40px 80px;
+        align-items: flex-start;
+        padding: 60px 80px;
+        background-color: #f9f9f9;
     }
 
     .achievements .work {
@@ -87,74 +110,93 @@ body {
         flex-direction: column;
         justify-content: center;
         align-items: center;
-        padding: 0 40px;
+        padding: 0 30px;
+        text-align: center;
     }
 
     .achievements .work i {
         width: fit-content;
-        font-size: 50px;
-        color: #333333;
+        font-size: 45px;
+        color: #007bff;
         border-radius: 50%;
-        border: 2px solid #333333;
-        padding: 12px;
+        border: 2px solid #007bff;
+        padding: 15px;
+        margin-bottom: 15px;
     }
 
     .achievements .work .work-heading {
-        font-size: 20px;
-        color: #333333;
+        font-size: 22px;
+        color: #333;
         text-transform: uppercase;
         margin: 10px 0;
+        font-weight: bold;
     }
 
     .achievements .work .work-text {
-        font-size: 15px;
-        color: #585858;
+        font-size: 16px;
+        color: #666;
         margin: 10px 0;
+        line-height: 1.6;
     }
 
     .about-me {
         display: flex;
-        padding: 40px 80px;
-        border-top: 2px solid #eeeeee;
+        align-items: center;
+        padding: 60px 80px;
+        border-top: 1px solid #e0e0e0;
+        background-color: #ffffff;
     }
 
     .about-me img {
-        width: 500px;
+        width: 450px;
         max-width: 100%;
         height: auto;
-        border-radius: 10px;
+        border-radius: 15px;
+        margin-right: 40px;
+        box-shadow: 0 8px 16px rgba(0,0,0,0.1);
+    }
+
+    .about-me-text {
+        flex: 1;
     }
 
     .about-me-text h2 {
-        font-size: 30px;
-        color: #333333;
-        margin: 0;
+        font-size: 32px;
+        color: #333;
+        margin: 0 0 15px 0;
+        font-weight: bold;
     }
 
     .about-me-text p {
-        font-size: 15px;
-        color: #585858;
+        font-size: 16px;
+        color: #555;
         margin: 10px 0;
+        line-height: 1.7;
     }
 
     /* CSS for footer */
     .footer {
         display: flex;
-        justify-content: space-between;
+        flex-direction: column;
+        justify-content: center;
         align-items: center;
-        background-color: #302f49;
-        padding: 40px 80px;
+        background-color: #2c3e50;
+        padding: 50px 20px;
+        text-align: center;
     }
 
     .footer .copy {
-        color: #fff;
+        color: #ecf0f1;
+        margin-bottom: 20px;
+        font-size: 14px;
     }
 
     .bottom-links {
         display: flex;
-        justify-content: space-around;
+        justify-content: center;
         align-items: center;
-        padding: 40px 0;
+        padding: 20px 0 0 0;
+        flex-wrap: wrap;
     }
 
     .bottom-links .links {
@@ -162,23 +204,36 @@ body {
         flex-direction: column;
         justify-content: center;
         align-items: center;
-        padding: 0 40px;
+        padding: 0 20px;
     }
 
     .bottom-links .links span {
-        font-size: 20px;
-        color: #fff;
+        font-size: 18px;
+        color: #ecf0f1;
         text-transform: uppercase;
-        margin: 10px 0;
+        margin: 0 0 10px 0;
+        font-weight: bold;
     }
 
-    .bottom-links .links a {
+    .bottom-links .links a, .footer .social-links a {
         text-decoration: none;
-        color: #a1a1a1;
-        padding: 10px 20px;
+        color: #bdc3c7;
+        padding: 8px 15px;
+        margin: 5px;
+        border-radius: 5px;
+        transition: color 0.3s ease;
+    }
+
+    .bottom-links .links a:hover, .footer .social-links a:hover {
+        color: #3498db;
     }
 
     a {
         text-decoration: none;
-        color: #a1a1a1;
+        color: #007bff;
+        transition: color 0.3s ease;
+    }
+
+    a:hover {
+        color: #0056b3;
     }
