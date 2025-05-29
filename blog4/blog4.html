@@ -5,10 +5,80 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AOSD Ltd</title>
+    <title>2025 R&D Tasks | AOSD Ltd Blog</title>
+    <meta name="description" content="A look at the planned research and development tasks for 2025, including Java Foundation Ontology and Complex Types for Functional Data Modelling.">
+    <meta name="keywords" content="R&D, Java, Ontology, Data Modelling, Functional Programming, 2025">
+    <meta property="og:title" content="2025 R&D Tasks | AOSD Ltd Blog">
+    <meta property="og:description" content="A look at the planned research and development tasks for 2025, including Java Foundation Ontology and Complex Types for Functional Data Modelling.">
+    <meta property="og:type" content="article">
+    <meta property="og:url" content="https://twalmsley.github.io/blog4/blog4.html">
+    <meta property="og:image" content="https://twalmsley.github.io/favicon.ico">
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:title" content="2025 R&D Tasks | AOSD Ltd Blog">
+    <meta name="twitter:description" content="A look at the planned research and development tasks for 2025, including Java Foundation Ontology and Complex Types for Functional Data Modelling.">
+    <link rel="canonical" href="https://twalmsley.github.io/blog4/blog4.html">
+    <link rel="icon" type="image/x-icon" href="../favicon.ico">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
-    <link rel="stylesheet" type="text/css" href="/styles.css">
+    <link rel="stylesheet" type="text/css" href="../styles.css">
+    <!-- Add highlight.js for code syntax highlighting -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/styles/github.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/highlight.min.js"></script>
+    <!-- Add marked.js for markdown parsing -->
     <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <style>
+        /* Markdown content styling */
+        #markdown-content {
+            line-height: 1.6;
+        }
+
+        #markdown-content h1,
+        #markdown-content h2,
+        #markdown-content h3,
+        #markdown-content h4,
+        #markdown-content h5,
+        #markdown-content h6 {
+            margin-top: 2em;
+            margin-bottom: 1em;
+        }
+
+        #markdown-content h1:first-child {
+            margin-top: 0;
+        }
+
+        #markdown-content p {
+            margin-bottom: 1em;
+        }
+
+        #markdown-content ul,
+        #markdown-content ol {
+            margin-left: 2em;
+            margin-bottom: 1em;
+        }
+
+        #markdown-content li {
+            margin-bottom: 0.5em;
+        }
+
+        #markdown-content pre {
+            margin: 1em 0;
+            padding: 1em;
+            background-color: #f6f8fa;
+            border-radius: 6px;
+            overflow-x: auto;
+        }
+
+        #markdown-content code {
+            font-family: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, Courier, monospace;
+            font-size: 0.9em;
+        }
+
+        #markdown-content blockquote {
+            margin: 1em 0;
+            padding-left: 1em;
+            border-left: 4px solid #dfe2e5;
+            color: #6a737d;
+        }
+    </style>
 </head>
 
 <body>
@@ -28,67 +98,7 @@
         </div>
         <div class="about-me" id="blog">
             <div class="about-me-text">
-                <div>
-                    <h1>Introduction</h1>
-                    <p>There are a couple of significant tasks that I plan to work on this year, one of which is a
-                        continuation and expansion of the work I did in the last few months of 2024, while the other is
-                        completely new (to me at least) and which I hope will lead to some new and interesting results.
-                    </p>
-                    <p>These tasks are currently self-funded and will be detailed in future blog posts, although I will
-                        be happy work with others on these tasks especially if funding is involved because I have
-                        limited funds available and may need to find other work instead.</p>
-                </div>
-                <div>
-                    <h1>1. Java Foundation Ontology</h1>
-                    <p>Over the last two or three months of 2024 I worked on a <a
-                            href="https://github.com/twalmsley/FoundationOntology">Java Foundation Ontology</a>
-                        along with a Java Persistence API (JPA) implementation and an in-memory implementation, as well
-                        as
-                        some example code in unit tests and a small </a
-                            href="https://github.com/twalmsley/foundation_spring_demo">Spring Boot project</a> to show
-                        how to use it.</p>
-                    <p>For 2025 I plan to continue working on this, with the following tasks:</p>
-                    <ul>
-                        <li>More examples and use cases to aid further development and with finding problems with the
-                            model</li>
-                        <li>Import/export data from IES4 models</li>
-                        <li>Use <a href="https://github.com/gchq/MagmaCore">MagmaCore</a> as a persistence layer to add
-                            HQDM support</li>
-                        <li>Add TypeDB as a persistence layer, hopefully to reduce the impedance match between the graph
-                            model and JPA</li>
-                        <li>Re-implement a project that was developed using MagmaCore directly. This will be a good test
-                            for whether the Java Foundation Ontology is easier to work with than MagmaCore.</li>
-                    </ul>
-                </div>
-                <div>
-                    <h1>2. Complex Types for Functional Data Modelling</h1>
-                    <p>This will involve the use of statically typed programming languages try to capture the meaning
-                        within data structures so that other objects with the same meaning can be used in their place if
-                        needed.</p>
-                    <p>It's hard to give examples of what I mean by this so I will produce a more detailed blog post to
-                        clarify things once some useful progress has been made.</p>
-                    <p>My hope is that it will lead to some of the following benefits and applications:</p>
-                    <ul>
-                        <li>IDEs with built-in type checking will be able to find modelling errors more easily.</li>
-                        <li>The focus will be on functions (activities) as well as the data they consume and produce.
-                        </li>
-                        <li>Functions will represent real-world activities and processes as well as their resources and
-                            environmental requirements, so it will not be possible to carry out an activity without all
-                            of the prerequisites.</li>
-                        <li>Functions will model 'everything' required by the activity, and the results will include
-                            waste items produced by the activity that must be dealt with somehow as well as the desired
-                            results of the activity.</li>
-                        <li>Complex data types will capture more information about what prerequisites are needed by
-                            functions.</li>
-                        <li>Stronger types will allow inferencing engines to search for possible combinations of
-                            functions that will solve a particular problem, or that will lead to new and unexpected
-                            results that might be useful.</li>
-                    </ul>
-                    <p>I anticipate that the data types needed will be complex and possibly deeply nested in order to
-                        capture the required details, and that the corresponding function signatures will make it almost
-                        impossible to call them with the wrong data. This is to be proven of course, but that is the
-                        goal of this task.</p>
-                </div>
+                <div id="markdown-content"></div>
             </div>
         </div>
     </main>
@@ -104,12 +114,30 @@
             </div>
             <div class="links">
                 <span>Social Links</span>
-                <a href="https://www.linkedin.com/in/tony-walmsley-8540732/"><i class="fab fa-linkedin"></i></a>
-                <a><i class="fab fa-facebook"></i></a>
-                <a><i class="fab fa-twitter"></i></a>
+                <a href="https://www.linkedin.com/in/tony-walmsley-8540732/" aria-label="LinkedIn"><i class="fab fa-linkedin" aria-hidden="true"></i></a>
+                <a aria-label="Facebook"><i class="fab fa-facebook" aria-hidden="true"></i></a>
+                <a aria-label="Twitter"><i class="fab fa-twitter" aria-hidden="true"></i></a>
             </div>
         </div>
     </footer>
+
+    <script>
+        async function loadMarkdown(file) {
+            const res = await fetch(file);
+            const html = await res.text();
+            return html;
+        }
+
+        loadMarkdown('rd-2025.md').then((markdownText) => {
+            const htmlContent = marked.parse(markdownText);
+            document.getElementById('markdown-content').innerHTML = htmlContent;
+            
+            // Apply syntax highlighting to code blocks
+            document.querySelectorAll('pre code').forEach((block) => {
+                hljs.highlightBlock(block);
+            });
+        });
+    </script>
 </body>
 
 </html>

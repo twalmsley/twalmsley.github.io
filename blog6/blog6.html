@@ -5,18 +5,18 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Simpler HQDM | AOSD Ltd Blog</title>
-    <meta name="description" content="A simpler alternative to HQDM, more suitable for programmers - exploring a more accessible approach to high-quality data modeling.">
-    <meta name="keywords" content="HQDM, Data Modeling, Programming, Software Development, Data Architecture">
-    <meta property="og:title" content="Simpler HQDM | AOSD Ltd Blog">
-    <meta property="og:description" content="A simpler alternative to HQDM, more suitable for programmers - exploring a more accessible approach to high-quality data modeling.">
+    <title>AI Coding Part 2 | AOSD Ltd Blog</title>
+    <meta name="description" content="Advanced techniques and practical applications of AI coding - Part 2 of our series on AI-assisted development.">
+    <meta name="keywords" content="AI Coding, Software Development, Programming, AI Tools, Development Best Practices">
+    <meta property="og:title" content="AI Coding Part 2 | AOSD Ltd Blog">
+    <meta property="og:description" content="Advanced techniques and practical applications of AI coding - Part 2 of our series on AI-assisted development.">
     <meta property="og:type" content="article">
-    <meta property="og:url" content="https://twalmsley.github.io/blog2/blog2.html">
+    <meta property="og:url" content="https://twalmsley.github.io/blog6/blog6.html">
     <meta property="og:image" content="https://twalmsley.github.io/favicon.ico">
     <meta name="twitter:card" content="summary">
-    <meta name="twitter:title" content="Simpler HQDM | AOSD Ltd Blog">
-    <meta name="twitter:description" content="A simpler alternative to HQDM, more suitable for programmers - exploring a more accessible approach to high-quality data modeling.">
-    <link rel="canonical" href="https://twalmsley.github.io/blog2/blog2.html">
+    <meta name="twitter:title" content="AI Coding Part 2 | AOSD Ltd Blog">
+    <meta name="twitter:description" content="Advanced techniques and practical applications of AI coding - Part 2 of our series on AI-assisted development.">
+    <link rel="canonical" href="https://twalmsley.github.io/blog6/blog6.html">
     <link rel="icon" type="image/x-icon" href="../favicon.ico">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
     <link rel="stylesheet" type="text/css" href="../styles.css">
@@ -93,8 +93,8 @@
     </header>
     <main>
         <div class="intro">
-            <h1>Simpler HQDM</h1>
-            <p>A simpler alternative to HQDM, more suitable for programmers</p>
+            <h1>AI Coding Part 2</h1>
+            <p>An update on AI coding for my task management application</p>
         </div>
         <div class="about-me" id="blog">
             <div class="about-me-text">
@@ -107,10 +107,10 @@
         <div class="bottom-links">
             <div class="links">
                 <span>More Info</span>
-                <a href="/index.html">Home</a>
-                <a href="/index.html#about">About</a>
-                <a href="/index.html#contact">Contact</a>
-                <a href="/blog.html">Blog</a>
+                <a href="../index.html">Home</a>
+                <a href="../index.html#about">About</a>
+                <a href="../index.html#contact">Contact</a>
+                <a href="../blog.html">Blog</a>
             </div>
             <div class="links">
                 <span>Social Links</span>
@@ -121,35 +121,18 @@
         </div>
     </footer>
 
-    <script>
-        async function loadMarkdown(file) {
-            const res = await fetch(file);
-            const html = await res.text();
-            return html;
-        }
+<script>
+    async function loadMarkdown(file) {
+        const res = await fetch(file);
+        const html = await res.text();
+        return html;
+    }
 
-        // Configure marked options
-        marked.setOptions({
-            highlight: function(code, lang) {
-                if (lang && hljs.getLanguage(lang)) {
-                    return hljs.highlight(code, { language: lang }).value;
-                }
-                return hljs.highlightAuto(code).value;
-            },
-            breaks: true,
-            gfm: true
-        });
-
-        loadMarkdown('simpler_hqdm.md').then((markdownText) => {
-            const htmlContent = marked.parse(markdownText);
-            document.getElementById('markdown-content').innerHTML = htmlContent;
-            
-            // Apply syntax highlighting to code blocks
-            document.querySelectorAll('pre code').forEach((block) => {
-                hljs.highlightBlock(block);
-            });
-        });
-    </script>
+    loadMarkdown('ai-coding-part2.md').then((markdownText) => {
+        const htmlContent = marked.parse(markdownText);
+        document.getElementById('markdown-content').innerHTML = htmlContent;
+    });
+</script>
 </body>
 
-</html>
+</html> 

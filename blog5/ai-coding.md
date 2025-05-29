@@ -241,3 +241,7 @@ I will cover this in the next blog post, and I'll also cover how well it went. I
 > _Call to action._
 
 If you're curious about trying out these tools there are plenty of YouTube videos explaining how to get started, so jump in and give it a go. Alternatively, if you're about to start a project and are considering whether AI tools will make it cheaper, please get in touch and perhaps I can help. 
+
+---
+
+EDIT: See [AI Coding Part 2](../blog6/blog6.html) for an update about how things are going.

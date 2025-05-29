@@ -5,10 +5,155 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AOSD Ltd</title>
+    <title>An LLM Christmas Plan | AOSD Ltd Blog</title>
+    <meta name="description" content="Discover how to use ChatGPT to plan the perfect Christmas holiday, from presents to meals and activities.">
+    <meta name="keywords" content="LLM, ChatGPT, Christmas Planning, Holiday Planning, AI Assistant">
+    <meta property="og:title" content="An LLM Christmas Plan | AOSD Ltd Blog">
+    <meta property="og:description" content="Discover how to use ChatGPT to plan the perfect Christmas holiday, from presents to meals and activities.">
+    <meta property="og:type" content="article">
+    <meta property="og:url" content="https://twalmsley.github.io/blog3/blog3.html">
+    <meta property="og:image" content="https://twalmsley.github.io/favicon.ico">
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:title" content="An LLM Christmas Plan | AOSD Ltd Blog">
+    <meta name="twitter:description" content="Discover how to use ChatGPT to plan the perfect Christmas holiday, from presents to meals and activities.">
+    <link rel="canonical" href="https://twalmsley.github.io/blog3/blog3.html">
+    <link rel="icon" type="image/x-icon" href="../favicon.ico">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
-    <link rel="stylesheet" type="text/css" href="/styles.css">
+    <link rel="stylesheet" type="text/css" href="../styles.css">
+    <!-- Add highlight.js for code syntax highlighting -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/styles/github.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/highlight.min.js"></script>
+    <!-- Add marked.js for markdown parsing -->
     <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <style>
+        /* Markdown content styling */
+        #markdown-content-01,
+        #markdown-content-02,
+        #markdown-content-03,
+        #markdown-content-04,
+        #markdown-content-05,
+        #markdown-content-06 {
+            line-height: 1.6;
+        }
+
+        #markdown-content-01 h1,
+        #markdown-content-02 h1,
+        #markdown-content-03 h1,
+        #markdown-content-04 h1,
+        #markdown-content-05 h1,
+        #markdown-content-06 h1,
+        #markdown-content-01 h2,
+        #markdown-content-02 h2,
+        #markdown-content-03 h2,
+        #markdown-content-04 h2,
+        #markdown-content-05 h2,
+        #markdown-content-06 h2,
+        #markdown-content-01 h3,
+        #markdown-content-02 h3,
+        #markdown-content-03 h3,
+        #markdown-content-04 h3,
+        #markdown-content-05 h3,
+        #markdown-content-06 h3,
+        #markdown-content-01 h4,
+        #markdown-content-02 h4,
+        #markdown-content-03 h4,
+        #markdown-content-04 h4,
+        #markdown-content-05 h4,
+        #markdown-content-06 h4,
+        #markdown-content-01 h5,
+        #markdown-content-02 h5,
+        #markdown-content-03 h5,
+        #markdown-content-04 h5,
+        #markdown-content-05 h5,
+        #markdown-content-06 h5,
+        #markdown-content-01 h6,
+        #markdown-content-02 h6,
+        #markdown-content-03 h6,
+        #markdown-content-04 h6,
+        #markdown-content-05 h6,
+        #markdown-content-06 h6 {
+            margin-top: 2em;
+            margin-bottom: 1em;
+        }
+
+        #markdown-content-01 h1:first-child,
+        #markdown-content-02 h1:first-child,
+        #markdown-content-03 h1:first-child,
+        #markdown-content-04 h1:first-child,
+        #markdown-content-05 h1:first-child,
+        #markdown-content-06 h1:first-child {
+            margin-top: 0;
+        }
+
+        #markdown-content-01 p,
+        #markdown-content-02 p,
+        #markdown-content-03 p,
+        #markdown-content-04 p,
+        #markdown-content-05 p,
+        #markdown-content-06 p {
+            margin-bottom: 1em;
+        }
+
+        #markdown-content-01 ul,
+        #markdown-content-02 ul,
+        #markdown-content-03 ul,
+        #markdown-content-04 ul,
+        #markdown-content-05 ul,
+        #markdown-content-06 ul,
+        #markdown-content-01 ol,
+        #markdown-content-02 ol,
+        #markdown-content-03 ol,
+        #markdown-content-04 ol,
+        #markdown-content-05 ol,
+        #markdown-content-06 ol {
+            margin-left: 2em;
+            margin-bottom: 1em;
+        }
+
+        #markdown-content-01 li,
+        #markdown-content-02 li,
+        #markdown-content-03 li,
+        #markdown-content-04 li,
+        #markdown-content-05 li,
+        #markdown-content-06 li {
+            margin-bottom: 0.5em;
+        }
+
+        #markdown-content-01 pre,
+        #markdown-content-02 pre,
+        #markdown-content-03 pre,
+        #markdown-content-04 pre,
+        #markdown-content-05 pre,
+        #markdown-content-06 pre {
+            margin: 1em 0;
+            padding: 1em;
+            background-color: #f6f8fa;
+            border-radius: 6px;
+            overflow-x: auto;
+        }
+
+        #markdown-content-01 code,
+        #markdown-content-02 code,
+        #markdown-content-03 code,
+        #markdown-content-04 code,
+        #markdown-content-05 code,
+        #markdown-content-06 code {
+            font-family: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, Courier, monospace;
+            font-size: 0.9em;
+        }
+
+        #markdown-content-01 blockquote,
+        #markdown-content-02 blockquote,
+        #markdown-content-03 blockquote,
+        #markdown-content-04 blockquote,
+        #markdown-content-05 blockquote,
+        #markdown-content-06 blockquote {
+            margin: 1em 0;
+            padding-left: 1em;
+            border-left: 4px solid #dfe2e5;
+            color: #6a737d;
+        }
+    </style>
 </head>
 
 <body>
@@ -67,51 +212,54 @@
             </div>
             <div class="links">
                 <span>Social Links</span>
-                <a href="https://www.linkedin.com/in/tony-walmsley-8540732/"><i class="fab fa-linkedin"></i></a>
-                <a><i class="fab fa-facebook"></i></a>
-                <a><i class="fab fa-twitter"></i></a>
+                <a href="https://www.linkedin.com/in/tony-walmsley-8540732/" aria-label="LinkedIn"><i class="fab fa-linkedin" aria-hidden="true"></i></a>
+                <a aria-label="Facebook"><i class="fab fa-facebook" aria-hidden="true"></i></a>
+                <a aria-label="Twitter"><i class="fab fa-twitter" aria-hidden="true"></i></a>
             </div>
         </div>
     </footer>
+
+    <script>
+        async function loadMarkdown(file) {
+            const res = await fetch(file);
+            const html = await res.text();
+            return html;
+        }
+
+        // Configure marked options
+        marked.setOptions({
+            highlight: function(code, lang) {
+                if (lang && hljs.getLanguage(lang)) {
+                    return hljs.highlight(code, { language: lang }).value;
+                }
+                return hljs.highlightAuto(code).value;
+            },
+            breaks: true,
+            gfm: true
+        });
+
+        // Load and render all markdown sections
+        const sections = [
+            { file: '01-what-how.md', id: 'markdown-content-01' },
+            { file: '02-presents.md', id: 'markdown-content-02' },
+            { file: '03-Meals.md', id: 'markdown-content-03' },
+            { file: '04-prep-activity-plan.md', id: 'markdown-content-04' },
+            { file: '05-relaxing-times.md', id: 'markdown-content-05' },
+            { file: '06-work.md', id: 'markdown-content-06' }
+        ];
+
+        sections.forEach(section => {
+            loadMarkdown(section.file).then((markdownText) => {
+                const htmlContent = marked.parse(markdownText);
+                document.getElementById(section.id).innerHTML = htmlContent;
+                
+                // Apply syntax highlighting to code blocks
+                document.querySelectorAll(`#${section.id} pre code`).forEach((block) => {
+                    hljs.highlightBlock(block);
+                });
+            });
+        });
+    </script>
 </body>
-
-
-<script>
-    async function loadMarkdown(file) {
-        const res = await fetch(file);
-        const html = await res.text();
-        return html;
-    }
-
-    loadMarkdown('01-what-how.md').then((markdownText) => {
-        const htmlContent = marked.parse(markdownText);
-        document.getElementById('markdown-content-01').innerHTML = htmlContent;
-    });
-
-    loadMarkdown('02-presents.md').then((markdownText) => {
-        const htmlContent = marked.parse(markdownText);
-        document.getElementById('markdown-content-02').innerHTML = htmlContent;
-    });
-
-    loadMarkdown('03-Meals.md').then((markdownText) => {
-        const htmlContent = marked.parse(markdownText);
-        document.getElementById('markdown-content-03').innerHTML = htmlContent;
-    });
-
-    loadMarkdown('04-prep-activity-plan.md').then((markdownText) => {
-        const htmlContent = marked.parse(markdownText);
-        document.getElementById('markdown-content-04').innerHTML = htmlContent;
-    });
-
-    loadMarkdown('05-relaxing-times.md').then((markdownText) => {
-        const htmlContent = marked.parse(markdownText);
-        document.getElementById('markdown-content-05').innerHTML = htmlContent;
-    });
-
-    loadMarkdown('06-work.md').then((markdownText) => {
-        const htmlContent = marked.parse(markdownText);
-        document.getElementById('markdown-content-06').innerHTML = htmlContent;
-    })
-</script>
 
 </html>
