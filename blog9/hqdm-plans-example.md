@@ -1,0 +1,18 @@
+# HQDM Plans and Requirements
+
+There is [an example](https://github.com/twalmsley/MagmaCore/blob/main/examples/src/test/java/uk/gov/gchq/magmacore/examples/plans/PlanAndRequirementsExample.java)<sup>†</sup> in my fork of the MagmaCore repository that shows how to use `Plans`, `Requirements`, and `RequirementSpecifications` as defined by [HQDM](https://hqdmtop.github.io/hqdmFramework/hqdm_framework/hqdm_framework.htm). The example creates the following entities:
+
+1. A `PossibleWorld` to represent the "real world" in which we live. All concrete items exist in some `PossibleWorld`, so we need one in the model.
+1. A `Plan` which is a part of the "real world" and which represents a future `PossibleWorld`. A `Plan` is a sub-type of `PossibleWorld`.
+1. Two `RequirementSpecifications`, one defining a car servicing activity, and one defining a serviced car. In HQDM, a `RequirementSpecification` is a `ClassOfState` which is the intersection of a number of classes that represent aspects of the state of an object. Since the state of the object is a member of the intersection, it can encode the requirement in as much detail as necessary.
+1. Two `Requirement` objects, one for the car servicing `Activity` and one for the car `FunctionalSystem` that will be the result of the `Activity`. In HQDM, a `Requirement` is a real world thing that exists in the future, and since HQDM is a 4D ontology, it is perfectly reasonable to refer to these future objects as being "real" in some sense, rather than imagined.
+1. The `Activity` `causes` the `Event` that is the `beginning` of the `StateOfFunctionalSystem` that is the serviced car. This is how the car servicing `Activity` produces a tangible result.
+1. All of the beginning and ending `Events` are in the future, and state exactly when the servicing is to take place, and when the serviced car will exist. 
+
+This is just a plan of course, so the real world entities may or may not come into existence when that time comes, but the expectation is that they will. They may also happen at times different to those shown on the plan, so the actual entities that result might not correspond exactly to those in the plan, but there will be a `reference` relation between the planned `Activity` and the actual car service activity, which might be best represented as bidirectional, so that the plan can be traced through to the actual activity, and vice versa.
+
+A better plan would include the requirement for a "car needing to be serviced", whose arrival at the garage will `cause` the car service to take place. A plan such as this has enough detail for a customer who doesn't need to know the details of the servicing activity, but you can imagine a more detailed specification of the `Activity` suitable for use by the mechanic. The detailed version would include sub-activities for changing the oil and filter, topping up water levels and tyre pressures, etc. as well as some actions specific to the make and model of the car. 
+
+Some planning scenarios may have variations to handle contingencies and uncertainties, and these can be created as additional `Plans` with some of the objects shared between them (since entities can be part of multiple `PossibleWorlds`), although if the entities in the other `Plans` have different spatio-temporal extents it is probably better to create distinct object to represent them rather than sharing between plans; this is because HQDM uses the spatio-temporal extent as the criterion of identity. Since the `RequirementSpecifications` are conceptual rather than concrete, they can be safely re-used to define objects existing in different `Plans`. 
+
+<sup>†</sup><sub>You may need to be logged in to GitHub to see this.</sub>
