@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Class, Aggregation, Composition</title>
+    <meta name="description" content="Understanding Class, Aggregation, and Composition in HQDM and when to use each relationship.">
+    <meta name="keywords" content="HQDM, Class, Aggregation, Composition, Ontology, Modeling, Relationships">
+    <meta property="og:title" content="Class, Aggregation, Composition in HQDM | AOSD Ltd Blog">
+    <meta property="og:description" content="Understanding Class, Aggregation, and Composition in HQDM and when to use each relationship.">
+    <meta property="og:type" content="article">
+    <meta property="og:url" content="https://twalmsley.github.io/blog13/blog13.html">
+    <meta property="og:image" content="https://twalmsley.github.io/favicon.ico">
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:title" content="Class, Aggregation, Composition in HQDM | AOSD Ltd Blog">
+    <meta name="twitter:description" content="Understanding Class, Aggregation, and Composition in HQDM and when to use each relationship.">
+    <link rel="canonical" href="https://twalmsley.github.io/blog13/blog13.html">
+    <link rel="icon" type="image/x-icon" href="../favicon.ico">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <link rel="stylesheet" type="text/css" href="../styles.css">
+    <!-- Add highlight.js for code syntax highlighting -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/styles/github.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/highlight.min.js"></script>
+    <!-- Add marked.js for markdown parsing -->
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <style>
+        /* Markdown content styling */
+        #markdown-content {
+            line-height: 1.6;
+        }
+
+        #markdown-content h1,
+        #markdown-content h2,
+        #markdown-content h3,
+        #markdown-content h4,
+        #markdown-content h5,
+        #markdown-content h6 {
+            margin-top: 2em;
+            margin-bottom: 1em;
+        }
+
+        #markdown-content h1:first-child {
+            margin-top: 0;
+        }
+
+        #markdown-content p {
+            margin-bottom: 1em;
+        }
+
+        #markdown-content ul,
+        #markdown-content ol {
+            margin-left: 2em;
+            margin-bottom: 1em;
+        }
+
+        #markdown-content li {
+            margin-bottom: 0.5em;
+        }
+
+        #markdown-content pre {
+            margin: 1em 0;
+            padding: 1em;
+            background-color: #f6f8fa;
+            border-radius: 6px;
+            overflow-x: auto;
+        }
+
+        #markdown-content code {
+            font-family: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, Courier, monospace;
+            font-size: 0.9em;
+        }
+
+        #markdown-content blockquote {
+            margin: 1em 0;
+            padding-left: 1em;
+            border-left: 4px solid #dfe2e5;
+            color: #6a737d;
+        }
+    </style>
+</head>
+
+<body>
+    <header class="header">
+        <a href="#" class="logo">AOSD Ltd</a>
+        <nav class="nav-items">
+            <a href="/index.html">Home</a>
+            <a href="/index.html#about">About</a>
+            <a href="/index.html#contact">Contact</a>
+            <a href="/blog.html">Blog</a>
+        </nav>
+    </header>
+    <main>
+        <div class="intro">
+            <h1>Applying Category Theory Concepts to System Specifications</h1>
+            <p>An attempt to write mathematical requirements and to model system components using Category Theory</p>
+        </div>
+        <div class="about-me" id="blog">
+            <div class="about-me-text">
+                <div id="markdown-content"></div>
+            </div>
+        </div>
+    </main>
+    <footer class="footer">
+        <div class="copy">&copy; 2025 AOSD Ltd</div>
+        <div class="bottom-links">
+            <div class="links">
+                <span>More Info</span>
+                <a href="../index.html">Home</a>
+                <a href="../index.html#about">About</a>
+                <a href="../index.html#contact">Contact</a>
+                <a href="../blog.html">Blog</a>
+            </div>
+            <div class="links">
+                <span>Social Links</span>
+                <a href="https://www.linkedin.com/in/tony-walmsley-8540732/" aria-label="LinkedIn"><i class="fab fa-linkedin" aria-hidden="true"></i></a>
+                <a aria-label="Facebook"><i class="fab fa-facebook" aria-hidden="true"></i></a>
+                <a aria-label="Twitter"><i class="fab fa-twitter" aria-hidden="true"></i></a>
+            </div>
+        </div>
+    </footer>
+
+<script>
+    async function loadMarkdown(file) {
+        const res = await fetch(file);
+        const html = await res.text();
+        return html;
+    }
+
+    loadMarkdown('content.md').then((markdownText) => {
+        const htmlContent = marked.parse(markdownText);
+        document.getElementById('markdown-content').innerHTML = htmlContent;
+    });
+</script>
+</body>
+
+</html> 
