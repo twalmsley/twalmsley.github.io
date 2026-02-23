@@ -1,0 +1,1014 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Bill Splitter</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #0c0c0f;
+      --bg-subtle: #12121a;
+      --surface: #18181f;
+      --surface-hover: #1f1f28;
+      --border: #2a2a34;
+      --border-focus: #3d3d4a;
+      --text: #eaeaf0;
+      --text-muted: #8888a0;
+      --accent: #7c6ef6;
+      --accent-hover: #9589f7;
+      --accent-glow: rgba(124, 110, 246, 0.25);
+      --success: #34d399;
+      --success-bg: rgba(52, 211, 153, 0.1);
+      --warning: #fbbf24;
+      --warning-bg: rgba(251, 191, 36, 0.1);
+      --danger: #f47272;
+      --danger-bg: rgba(244, 114, 114, 0.1);
+      --radius: 14px;
+      --radius-sm: 10px;
+      --radius-lg: 18px;
+      --space-xs: 0.25rem;
+      --space-sm: 0.5rem;
+      --space-md: 1rem;
+      --space-lg: 1.5rem;
+      --space-xl: 2rem;
+      --space-2xl: 2.5rem;
+      --shadow: 0 4px 24px rgba(0, 0, 0, 0.2);
+      --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.15);
+      --touch-min: 44px;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html {
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    body {
+      font-family: 'DM Sans', system-ui, -apple-system, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      line-height: 1.5;
+      padding: var(--space-lg);
+      background-image:
+        radial-gradient(ellipse 80% 50% at 50% -20%, rgba(124, 110, 246, 0.12), transparent),
+        radial-gradient(ellipse 60% 40% at 100% 100%, rgba(124, 110, 246, 0.06), transparent);
+    }
+
+    .container {
+      max-width: 520px;
+      margin: 0 auto;
+      width: 100%;
+    }
+
+    .page-header {
+      text-align: center;
+      margin-bottom: var(--space-2xl);
+    }
+
+    .page-header h1 {
+      font-size: clamp(1.5rem, 5vw, 2rem);
+      font-weight: 700;
+      letter-spacing: -0.03em;
+      margin-bottom: var(--space-xs);
+      color: var(--text);
+    }
+
+    .subtitle {
+      color: var(--text-muted);
+      font-size: clamp(0.85rem, 2.5vw, 0.95rem);
+      max-width: 28ch;
+      margin: 0 auto;
+    }
+
+    .bill-section {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: var(--space-lg);
+      margin-bottom: var(--space-lg);
+      box-shadow: var(--shadow-sm);
+      transition: border-color 0.2s, box-shadow 0.2s;
+    }
+
+    .bill-section:focus-within {
+      border-color: var(--border-focus);
+      box-shadow: 0 0 0 1px var(--border-focus);
+    }
+
+    .bill-section label {
+      display: block;
+      font-size: 0.75rem;
+      font-weight: 600;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      margin-bottom: var(--space-sm);
+    }
+
+    .bill-input-wrap {
+      display: flex;
+      align-items: center;
+      gap: var(--space-sm);
+    }
+
+    .bill-input-wrap span {
+      color: var(--text-muted);
+      font-size: 1.35rem;
+      font-weight: 500;
+    }
+
+    #billTotal {
+      flex: 1;
+      min-width: 0;
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      padding: var(--space-md) var(--space-lg);
+      font-size: clamp(1.15rem, 4vw, 1.35rem);
+      font-weight: 600;
+      color: var(--text);
+      font-family: inherit;
+      transition: border-color 0.2s, box-shadow 0.2s;
+    }
+
+    #billTotal:focus {
+      outline: none;
+      border-color: var(--accent);
+      box-shadow: 0 0 0 3px var(--accent-glow);
+    }
+
+    .tip-row {
+      margin-top: var(--space-lg);
+      padding-top: var(--space-lg);
+      border-top: 1px solid var(--border);
+    }
+
+    .tip-row label {
+      display: block;
+      font-size: 0.75rem;
+      font-weight: 600;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      margin-bottom: var(--space-sm);
+    }
+
+    .tip-buttons {
+      display: flex;
+      flex-wrap: wrap;
+      gap: var(--space-sm);
+    }
+
+    .btn-tip {
+      background: var(--surface-hover);
+      color: var(--text);
+      border: 1px solid var(--border);
+      flex: 1;
+      min-width: calc(33.333% - var(--space-sm));
+    }
+
+    .btn-tip:hover {
+      border-color: var(--accent);
+      color: var(--accent);
+      background: rgba(124, 110, 246, 0.1);
+    }
+
+    .unallocated-bar {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: var(--space-md) var(--space-lg);
+      margin-bottom: var(--space-lg);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: var(--space-md);
+      flex-wrap: wrap;
+      box-shadow: var(--shadow-sm);
+      transition: border-color 0.2s, background 0.2s;
+    }
+
+    .unallocated-bar.zero {
+      border-color: var(--success);
+      background: var(--success-bg);
+    }
+
+    .unallocated-bar.over {
+      border-color: var(--danger);
+      background: var(--danger-bg);
+    }
+
+    .unallocated-label {
+      font-size: 0.8rem;
+      font-weight: 600;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    .unallocated-value {
+      font-size: clamp(1.1rem, 3.5vw, 1.3rem);
+      font-weight: 700;
+      font-variant-numeric: tabular-nums;
+      letter-spacing: 0.02em;
+    }
+
+    .unallocated-value.zero {
+      color: var(--success);
+    }
+
+    .unallocated-value.over {
+      color: var(--danger);
+    }
+
+    .unallocated-value.positive {
+      color: var(--warning);
+    }
+
+    .friends-header {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: var(--space-md);
+      margin-bottom: var(--space-lg);
+    }
+
+    .friends-header h2 {
+      font-size: 0.8rem;
+      font-weight: 600;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+    }
+
+    .btn {
+      font-family: inherit;
+      font-size: 0.85rem;
+      font-weight: 600;
+      padding: var(--space-sm) var(--space-md);
+      min-height: var(--touch-min);
+      border: none;
+      border-radius: var(--radius-sm);
+      cursor: pointer;
+      transition: background 0.2s, color 0.2s, border-color 0.2s, transform 0.1s;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .btn:active {
+      transform: scale(0.98);
+    }
+
+    .btn-add {
+      background: var(--accent);
+      color: white;
+    }
+
+    .btn-add:hover {
+      background: var(--accent-hover);
+    }
+
+    .btn-distribute {
+      background: var(--surface);
+      color: var(--text);
+      border: 1px solid var(--border);
+    }
+
+    .btn-distribute:hover:not(:disabled) {
+      background: var(--surface-hover);
+      border-color: var(--accent);
+      color: var(--accent);
+    }
+
+    .btn-distribute:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+
+    .btn-icon {
+      width: 1.25rem;
+      height: 1.25rem;
+      flex-shrink: 0;
+    }
+
+    .friends-actions {
+      display: flex;
+      align-items: center;
+      gap: var(--space-sm);
+      flex-wrap: wrap;
+    }
+
+    .friends-list {
+      display: grid;
+      gap: var(--space-md);
+    }
+
+    .friend-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: var(--space-lg);
+      transition: border-color 0.2s, background 0.2s, box-shadow 0.2s;
+      box-shadow: var(--shadow-sm);
+    }
+
+    .friend-card:hover {
+      background: var(--surface-hover);
+    }
+
+    .friend-card.frozen {
+      border-color: var(--accent);
+      background: linear-gradient(135deg, rgba(124, 110, 246, 0.08) 0%, rgba(124, 110, 246, 0.03) 100%);
+      box-shadow: 0 0 0 1px rgba(124, 110, 246, 0.2);
+    }
+
+    .friend-card.frozen .friend-slider-wrap input[type="range"] {
+      opacity: 0.5;
+      pointer-events: none;
+    }
+
+    .friend-row {
+      display: flex;
+      align-items: center;
+      gap: var(--space-md);
+      margin-bottom: var(--space-md);
+    }
+
+    .friend-name {
+      flex: 1;
+      min-width: 0;
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      padding: var(--space-sm) var(--space-md);
+      font-size: 1rem;
+      color: var(--text);
+      font-family: inherit;
+      min-height: var(--touch-min);
+      transition: border-color 0.2s;
+    }
+
+    .friend-name:focus {
+      outline: none;
+      border-color: var(--accent);
+      box-shadow: 0 0 0 2px var(--accent-glow);
+    }
+
+    .friend-name::placeholder {
+      color: var(--text-muted);
+    }
+
+    .friend-percent {
+      font-size: 0.95rem;
+      font-weight: 700;
+      min-width: 3.75rem;
+      text-align: right;
+      font-variant-numeric: tabular-nums;
+      color: var(--accent);
+    }
+
+    .friend-freeze {
+      display: flex;
+      align-items: center;
+      gap: var(--space-md);
+      margin-bottom: var(--space-md);
+    }
+
+    .freeze-switch {
+      display: inline-flex;
+      align-items: center;
+      gap: var(--space-sm);
+      cursor: pointer;
+      user-select: none;
+    }
+
+    .freeze-switch-input {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      padding: 0;
+      margin: -1px;
+      overflow: hidden;
+      clip: rect(0, 0, 0, 0);
+      border: 0;
+    }
+
+    .freeze-switch-track {
+      position: relative;
+      width: 2.75rem;
+      height: 1.5rem;
+      flex-shrink: 0;
+      background: var(--border);
+      border-radius: 9999px;
+      transition: background 0.2s;
+    }
+
+    .freeze-switch-thumb {
+      position: absolute;
+      top: 0.2rem;
+      left: 0.2rem;
+      width: 1.1rem;
+      height: 1.1rem;
+      border-radius: 50%;
+      background: var(--text);
+      box-shadow: var(--shadow-sm);
+      transition: transform 0.2s;
+    }
+
+    .freeze-switch-input:checked + .freeze-switch-track {
+      background: var(--accent);
+    }
+
+    .freeze-switch-input:checked + .freeze-switch-track .freeze-switch-thumb {
+      transform: translateX(1.25rem);
+    }
+
+    .freeze-switch-input:focus-visible + .freeze-switch-track {
+      box-shadow: 0 0 0 2px var(--accent-glow);
+    }
+
+    .freeze-icon {
+      display: inline-block;
+      font-size: 1.1rem;
+      line-height: 1;
+      opacity: 0.9;
+    }
+
+    .friend-card.frozen .freeze-icon {
+      opacity: 1;
+      color: var(--accent);
+    }
+
+    .friend-slider-wrap {
+      display: flex;
+      align-items: center;
+      gap: var(--space-md);
+      margin-bottom: var(--space-md);
+    }
+
+    .friend-slider-wrap input[type="range"] {
+      flex: 1;
+      height: 8px;
+      -webkit-appearance: none;
+      appearance: none;
+      background: var(--border);
+      border-radius: 4px;
+    }
+
+    .friend-slider-wrap input[type="range"]::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      appearance: none;
+      width: 22px;
+      height: 22px;
+      border-radius: 50%;
+      background: var(--accent);
+      cursor: pointer;
+      transition: transform 0.15s, box-shadow 0.15s;
+      box-shadow: var(--shadow-sm);
+    }
+
+    .friend-slider-wrap input[type="range"]::-webkit-slider-thumb:hover {
+      transform: scale(1.08);
+      box-shadow: 0 0 0 6px var(--accent-glow);
+    }
+
+    .friend-slider-wrap input[type="range"]::-moz-range-thumb {
+      width: 22px;
+      height: 22px;
+      border-radius: 50%;
+      background: var(--accent);
+      cursor: pointer;
+      border: none;
+      box-shadow: var(--shadow-sm);
+    }
+
+    .friend-footer {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: var(--space-md);
+      flex-wrap: wrap;
+    }
+
+    .friend-amount-wrap {
+      display: flex;
+      align-items: center;
+      gap: var(--space-xs);
+    }
+
+    .friend-amount-wrap span {
+      font-size: 0.9rem;
+      color: var(--text-muted);
+      font-weight: 500;
+    }
+
+    .friend-amount-input {
+      width: 5.5rem;
+      font-size: 0.95rem;
+      font-variant-numeric: tabular-nums;
+      font-weight: 600;
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      padding: var(--space-sm) var(--space-md);
+      color: var(--text);
+      font-family: inherit;
+      text-align: right;
+      min-height: var(--touch-min);
+      transition: border-color 0.2s;
+    }
+
+    .friend-amount-input:focus {
+      outline: none;
+      border-color: var(--accent);
+      box-shadow: 0 0 0 2px var(--accent-glow);
+    }
+
+    .friend-amount-input:disabled {
+      opacity: 0.7;
+      cursor: not-allowed;
+    }
+
+    .btn-remove {
+      background: transparent;
+      color: var(--text-muted);
+      font-size: 0.85rem;
+      min-height: var(--touch-min);
+      padding: var(--space-sm) var(--space-md);
+    }
+
+    .btn-remove:hover {
+      color: var(--danger);
+      background: var(--danger-bg);
+    }
+
+    .empty-state {
+      text-align: center;
+      padding: var(--space-2xl);
+      color: var(--text-muted);
+      font-size: 0.95rem;
+    }
+
+    /* Tablet and up: slightly wider, more breathing room */
+    @media (min-width: 640px) {
+      body {
+        padding: var(--space-xl);
+      }
+
+      .container {
+        max-width: 560px;
+      }
+
+      .bill-section,
+      .unallocated-bar {
+        padding: var(--space-lg) var(--space-xl);
+      }
+
+      .friend-card {
+        padding: var(--space-lg) var(--space-xl);
+      }
+
+      .friends-actions .btn {
+        padding: var(--space-sm) var(--space-lg);
+      }
+    }
+
+    /* Desktop: comfortable max width, reduced padding for form */
+    @media (min-width: 1024px) {
+      body {
+        padding: var(--space-2xl) var(--space-xl);
+      }
+
+      .container {
+        max-width: 520px;
+      }
+
+      .page-header {
+        margin-bottom: var(--space-2xl);
+      }
+    }
+
+    /* Small phones: reduce padding, ensure full-width buttons stack */
+    @media (max-width: 380px) {
+      body {
+        padding: var(--space-md);
+      }
+
+      .friends-header {
+        flex-direction: column;
+        align-items: stretch;
+      }
+
+      .friends-actions {
+        flex-direction: column;
+      }
+
+      .friends-actions .btn {
+        width: 100%;
+      }
+
+      .friend-footer {
+        flex-direction: column;
+        align-items: stretch;
+      }
+
+      .friend-amount-wrap {
+        justify-content: flex-end;
+      }
+
+      .btn-remove {
+        align-self: flex-end;
+      }
+    }
+
+    /* Prefer reduced motion */
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        transition-duration: 0.01ms !important;
+      }
+
+      .btn:active {
+        transform: none;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header class="page-header">
+      <h1>Bill Splitter</h1>
+      <p class="subtitle">Split a bill between friends and adjust shares with the sliders.</p>
+    </header>
+
+    <div class="bill-section">
+      <label for="billTotal">Total bill amount</label>
+      <div class="bill-input-wrap">
+        <span>£</span>
+        <input type="number" id="billTotal" placeholder="0.00" min="0" step="0.01" value="100">
+      </div>
+      <div class="tip-row">
+        <label>Add tip</label>
+        <div class="tip-buttons">
+          <button type="button" class="btn btn-tip" data-tip="5">+5%</button>
+          <button type="button" class="btn btn-tip" data-tip="10">+10%</button>
+          <button type="button" class="btn btn-tip" data-tip="15">+15%</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="unallocated-bar" id="unallocatedBar">
+      <span class="unallocated-label" id="unallocatedLabel">Paid</span>
+      <span class="unallocated-value" id="unallocatedValue">£0.00</span>
+    </div>
+
+    <div class="friends-header">
+      <h2>Split by person</h2>
+      <div class="friends-actions">
+        <button type="button" class="btn btn-distribute" id="distributeEvenly" title="Distribute evenly – split the remaining amount equally among unfrozen friends" aria-label="Distribute evenly">
+          <svg class="btn-icon btn-icon-distribute" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M12 5v14M5 9h14M5 15h14"/>
+          </svg>
+        </button>
+        <button type="button" class="btn btn-add" id="addFriend" title="Add friend" aria-label="Add friend">
+          <svg class="btn-icon btn-icon-add" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <circle cx="9" cy="7" r="4"/><path d="M3 21v-2a4 4 0 0 1 4-4h4a4 4 0 0 1 4 4v2"/><path d="M16 11h6M19 8v6"/>
+          </svg>
+        </button>
+      </div>
+    </div>
+
+    <div id="friendsList" class="friends-list"></div>
+  </div>
+
+  <script>
+    const DEFAULT_FRIENDS = 4;
+    const storageKey = 'bill-splitter-state';
+
+    let state = {
+      billTotal: 100,
+      friends: []
+    };
+
+    function loadState() {
+      try {
+        const saved = localStorage.getItem(storageKey);
+        if (saved) {
+          const parsed = JSON.parse(saved);
+          state.billTotal = parsed.billTotal ?? 100;
+          const raw = Array.isArray(parsed.friends) && parsed.friends.length > 0 ? parsed.friends : null;
+          state.friends = raw
+            ? raw.map(f => ({ ...f, frozen: !!f.frozen }))
+            : createDefaultFriends();
+        } else {
+          state.friends = createDefaultFriends();
+        }
+      } catch {
+        state.friends = createDefaultFriends();
+      }
+    }
+
+    function createDefaultFriends() {
+      const percentEach = 100 / DEFAULT_FRIENDS;
+      return Array.from({ length: DEFAULT_FRIENDS }, (_, i) => ({
+        id: crypto.randomUUID(),
+        name: `Friend ${i + 1}`,
+        percent: Math.round(percentEach * 100) / 100,
+        frozen: false
+      }));
+    }
+
+    function saveState() {
+      localStorage.setItem(storageKey, JSON.stringify({
+        billTotal: state.billTotal,
+        friends: state.friends.map(({ id, name, percent, frozen }) => ({ id, name, percent, frozen: !!frozen }))
+      }));
+    }
+
+    function totalAllocated() {
+      return state.friends.reduce((sum, f) => sum + f.percent, 0);
+    }
+
+    function unallocatedPercent() {
+      return 100 - totalAllocated();
+    }
+
+    function unallocatedAmount() {
+      const total = Number(state.billTotal) || 0;
+      return (total * unallocatedPercent()) / 100;
+    }
+
+    function formatMoney(amount) {
+      return new Intl.NumberFormat('en-GB', {
+        style: 'currency',
+        currency: 'GBP',
+        minimumFractionDigits: 2,
+        maximumFractionDigits: 2
+      }).format(amount);
+    }
+
+    function renderUnallocated() {
+      const bar = document.getElementById('unallocatedBar');
+      const valueEl = document.getElementById('unallocatedValue');
+      const labelEl = document.getElementById('unallocatedLabel');
+      const amount = unallocatedAmount();
+      const percent = unallocatedPercent();
+
+      if (labelEl) {
+        if (Math.abs(percent) < 0.01) labelEl.textContent = 'Paid';
+        else if (percent < 0) labelEl.textContent = 'Overpaid';
+        else labelEl.textContent = 'Underpaid';
+      }
+
+      valueEl.textContent = `${formatMoney(amount)} (${percent >= 0 ? '+' : ''}${percent.toFixed(1)}%)`;
+      valueEl.className = 'unallocated-value';
+      bar.className = 'unallocated-bar';
+
+      if (Math.abs(percent) < 0.01) {
+        valueEl.classList.add('zero');
+        bar.classList.add('zero');
+      } else if (percent < 0) {
+        valueEl.classList.add('over');
+        bar.classList.add('over');
+      } else {
+        valueEl.classList.add('positive');
+      }
+    }
+
+    function friendAmount(percent) {
+      const total = Number(state.billTotal) || 0;
+      return (total * percent) / 100;
+    }
+
+    function renderFriends() {
+      const container = document.getElementById('friendsList');
+      container.innerHTML = '';
+
+      state.friends.forEach((friend, index) => {
+        const card = document.createElement('div');
+        card.className = 'friend-card' + (friend.frozen ? ' frozen' : '');
+        card.dataset.id = friend.id;
+
+        const canRemove = state.friends.length > 1;
+
+        card.innerHTML = `
+          <div class="friend-row">
+            <input type="text" class="friend-name" value="${escapeHtml(friend.name)}" placeholder="Name" data-id="${friend.id}">
+            <span class="friend-percent" data-id="${friend.id}">${friend.percent.toFixed(1)}%</span>
+          </div>
+          <div class="friend-freeze">
+            <label class="freeze-switch" title="Freeze" aria-label="Freeze">
+              <input type="checkbox" class="freeze-switch-input friend-freeze-cb" id="freeze-${friend.id}" data-id="${friend.id}" ${friend.frozen ? 'checked' : ''}>
+              <span class="freeze-switch-track"><span class="freeze-switch-thumb"></span></span>
+              <span class="freeze-icon" aria-hidden="true">❄</span>
+            </label>
+          </div>
+          <div class="friend-slider-wrap">
+            <input type="range" class="friend-slider" min="0" max="100" step="0.5" value="${friend.percent}" data-id="${friend.id}" ${friend.frozen ? 'disabled' : ''}>
+          </div>
+          <div class="friend-footer">
+            <div class="friend-amount-wrap">
+              <span>£</span>
+              <input type="number" class="friend-amount-input" data-id="${friend.id}" min="0" step="0.01" value="${friendAmount(friend.percent).toFixed(2)}" ${friend.frozen ? 'disabled' : ''}>
+            </div>
+            ${canRemove ? `<button type="button" class="btn btn-remove" data-id="${friend.id}" title="Remove" aria-label="Remove"><svg class="btn-icon btn-icon-remove" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 6h18M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/><line x1="10" y1="11" x2="10" y2="17"/><line x1="14" y1="11" x2="14" y2="17"/></svg></button>` : ''}
+          </div>
+        `;
+
+        container.appendChild(card);
+      });
+
+      container.querySelectorAll('.friend-name').forEach(input => {
+        input.addEventListener('input', (e) => {
+          const id = e.target.dataset.id;
+          const friend = state.friends.find(f => f.id === id);
+          if (friend) friend.name = e.target.value;
+          saveState();
+        });
+      });
+
+      container.querySelectorAll('.friend-slider').forEach(slider => {
+        slider.addEventListener('input', (e) => {
+          const id = e.target.dataset.id;
+          const friend = state.friends.find(f => f.id === id);
+          if (friend) {
+            friend.percent = Math.round(Number(e.target.value) * 10) / 10;
+            e.target.value = friend.percent;
+            updateFriendDisplay(id);
+          }
+          renderUnallocated();
+          saveState();
+        });
+      });
+
+      container.querySelectorAll('.friend-amount-input').forEach(input => {
+        input.addEventListener('change', (e) => {
+          const id = e.target.dataset.id;
+          const friend = state.friends.find(f => f.id === id);
+          const billTotal = Number(state.billTotal) || 0;
+          if (!friend || billTotal <= 0) return;
+          const amount = parseFloat(e.target.value);
+          if (!Number.isFinite(amount) || amount < 0) return;
+          friend.percent = (amount / billTotal) * 100;
+          updateFriendDisplay(id);
+          renderUnallocated();
+          saveState();
+        });
+      });
+
+      container.querySelectorAll('.friend-freeze-cb').forEach(cb => {
+        cb.addEventListener('change', (e) => {
+          const id = e.target.dataset.id;
+          const friend = state.friends.find(f => f.id === id);
+          if (friend) {
+            friend.frozen = e.target.checked;
+            const card = container.querySelector(`.friend-card[data-id="${id}"]`);
+            const slider = container.querySelector(`.friend-slider[data-id="${id}"]`);
+            if (card) card.classList.toggle('frozen', friend.frozen);
+            if (slider) slider.disabled = friend.frozen;
+            const amountInput = container.querySelector(`.friend-amount-input[data-id="${id}"]`);
+            if (amountInput) amountInput.disabled = friend.frozen;
+          }
+          updateDistributeButton();
+          saveState();
+        });
+      });
+
+      container.querySelectorAll('.btn-remove').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+          const id = e.currentTarget.dataset.id;
+          state.friends = state.friends.filter(f => f.id !== id);
+          renderFriends();
+          renderUnallocated();
+          updateDistributeButton();
+          saveState();
+        });
+      });
+
+      updateDistributeButton();
+    }
+
+    function unfrozenFriends() {
+      return state.friends.filter(f => !f.frozen);
+    }
+
+    function updateDistributeButton() {
+      const btn = document.getElementById('distributeEvenly');
+      const n = unfrozenFriends().length;
+      btn.disabled = n === 0;
+    }
+
+    function distributeEvenly() {
+      const billTotal = Number(state.billTotal) || 0;
+      const frozen = state.friends.filter(f => f.frozen);
+      const unfrozen = state.friends.filter(f => !f.frozen);
+      if (unfrozen.length === 0 || billTotal <= 0) return;
+
+      const frozenTotalAmount = frozen.reduce((sum, f) => sum + (billTotal * f.percent / 100), 0);
+      const unfrozenAmount = billTotal - frozenTotalAmount;
+
+      const totalCents = Math.round(unfrozenAmount * 100);
+      const n = unfrozen.length;
+      const baseCents = Math.floor(totalCents / n);
+      const remainder = totalCents - baseCents * n;
+
+      unfrozen.forEach((f, i) => {
+        const cents = baseCents + (i < remainder ? 1 : 0);
+        const amountPounds = cents / 100;
+        f.percent = billTotal > 0 ? (amountPounds / billTotal) * 100 : 0;
+      });
+
+      const totalAllocatedAmount = state.friends.reduce(
+        (sum, f) => sum + (billTotal * f.percent / 100),
+        0
+      );
+      const diff = billTotal - totalAllocatedAmount;
+      if (Math.abs(diff) > 0.0001 && unfrozen.length > 0) {
+        const first = unfrozen[0];
+        const firstAmount = billTotal * first.percent / 100;
+        first.percent = ((firstAmount + diff) / billTotal) * 100;
+      }
+
+      renderFriends();
+      renderUnallocated();
+      saveState();
+    }
+
+    function updateFriendDisplay(id) {
+      const friend = state.friends.find(f => f.id === id);
+      if (!friend) return;
+      const el = document.querySelector(`[data-id="${id}"].friend-percent`);
+      const amountInput = document.querySelector(`.friend-amount-input[data-id="${id}"]`);
+      const slider = document.querySelector(`.friend-slider[data-id="${id}"]`);
+      if (el) el.textContent = `${friend.percent.toFixed(1)}%`;
+      if (amountInput) amountInput.value = friendAmount(friend.percent).toFixed(2);
+      if (slider) slider.value = friend.percent;
+    }
+
+    function escapeHtml(s) {
+      const div = document.createElement('div');
+      div.textContent = s;
+      return div.innerHTML;
+    }
+
+    document.getElementById('billTotal').addEventListener('input', (e) => {
+      state.billTotal = parseFloat(e.target.value) || 0;
+      state.friends.forEach(f => updateFriendDisplay(f.id));
+      renderUnallocated();
+      saveState();
+    });
+
+    document.querySelectorAll('.btn-tip').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const tipPercent = Number(btn.dataset.tip) || 0;
+        const current = Number(state.billTotal) || 0;
+        const withTip = Math.round((current * (1 + tipPercent / 100)) * 100) / 100;
+        if (withTip <= current) return;
+        state.billTotal = withTip;
+        document.getElementById('billTotal').value = withTip;
+        state.friends.forEach(f => {
+          const amountBeforeTip = (current * f.percent) / 100;
+          f.percent = current > 0 ? (amountBeforeTip / withTip) * 100 : 0;
+        });
+        state.friends.forEach(f => updateFriendDisplay(f.id));
+        renderUnallocated();
+        saveState();
+      });
+    });
+
+    document.getElementById('addFriend').addEventListener('click', () => {
+      const total = totalAllocated();
+      const remaining = 100 - total;
+      state.friends.push({
+        id: crypto.randomUUID(),
+        name: `Friend ${state.friends.length + 1}`,
+        percent: Math.max(0, Math.min(100, remaining)),
+        frozen: false
+      });
+      renderFriends();
+      renderUnallocated();
+      updateDistributeButton();
+      saveState();
+    });
+
+    document.getElementById('distributeEvenly').addEventListener('click', distributeEvenly);
+
+    loadState();
+    document.getElementById('billTotal').value = state.billTotal;
+    state.friends.forEach(f => { if (f.frozen === undefined) f.frozen = false; });
+    renderFriends();
+    renderUnallocated();
+    updateDistributeButton();
+  </script>
+</body>
+</html>
