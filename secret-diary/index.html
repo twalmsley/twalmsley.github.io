@@ -1,0 +1,1205 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Secret Diary — Mood Journal</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=Source+Sans+3:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #f8f6f3;
+      --surface: #ffffff;
+      --text: #2c2926;
+      --text-muted: #6b6560;
+      --accent: #c17f59;
+      --accent-hover: #a96a47;
+      --border: #e8e4df;
+      --mood-bg: #f0ebe6;
+      --shadow: rgba(44, 41, 38, 0.06);
+      --error: #c45c4a;
+    }
+
+    [data-theme="dark"] {
+      --bg: #1a1816;
+      --surface: #252220;
+      --text: #f0ebe6;
+      --text-muted: #9a948c;
+      --accent: #d4957a;
+      --accent-hover: #e8b39e;
+      --border: #3a3632;
+      --mood-bg: #2e2a27;
+      --shadow: rgba(0, 0, 0, 0.3);
+      --error: #e07d6b;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: 'Source Sans 3', -apple-system, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      transition: background 0.3s, color 0.3s;
+    }
+
+    .app {
+      max-width: 720px;
+      margin: 0 auto;
+      padding: 1.5rem;
+      min-height: 100vh;
+    }
+
+    /* Lock screen */
+    .lock-screen {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 80vh;
+      padding: 2rem;
+    }
+
+    .lock-screen h1 {
+      font-family: 'DM Serif Display', serif;
+      font-size: 2rem;
+      font-weight: 400;
+      margin-bottom: 0.5rem;
+      color: var(--text);
+    }
+
+    .lock-screen .subtitle {
+      color: var(--text-muted);
+      margin-bottom: 2.5rem;
+      font-size: 0.95rem;
+    }
+
+    .lock-form {
+      width: 100%;
+      max-width: 320px;
+    }
+
+    .lock-form label {
+      display: block;
+      font-size: 0.85rem;
+      font-weight: 600;
+      margin-bottom: 0.4rem;
+      color: var(--text-muted);
+    }
+
+    .lock-form input {
+      width: 100%;
+      padding: 0.75rem 1rem;
+      font-size: 1rem;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      background: var(--surface);
+      color: var(--text);
+      margin-bottom: 1rem;
+      transition: border-color 0.2s, box-shadow 0.2s;
+    }
+
+    .lock-form input:focus {
+      outline: none;
+      border-color: var(--accent);
+      box-shadow: 0 0 0 3px rgba(193, 127, 89, 0.2);
+    }
+
+    .lock-form input::placeholder {
+      color: var(--text-muted);
+      opacity: 0.7;
+    }
+
+    .btn {
+      width: 100%;
+      padding: 0.85rem 1.25rem;
+      font-size: 1rem;
+      font-weight: 600;
+      font-family: inherit;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+      transition: background 0.2s, transform 0.05s;
+    }
+
+    .btn:active {
+      transform: scale(0.98);
+    }
+
+    .btn-primary {
+      background: var(--accent);
+      color: #fff;
+      margin-top: 0.5rem;
+    }
+
+    .btn-primary:hover {
+      background: var(--accent-hover);
+    }
+
+    .btn-primary:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+    }
+
+    .error-msg {
+      color: var(--error);
+      font-size: 0.9rem;
+      margin-top: 0.5rem;
+      text-align: center;
+    }
+
+    .hint-msg {
+      color: var(--text-muted);
+      font-size: 0.85rem;
+      margin-top: 1rem;
+      text-align: center;
+    }
+
+    /* Journal (unlocked) */
+    .journal-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 1rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .journal-header h1 {
+      font-family: 'DM Serif Display', serif;
+      font-size: 1.75rem;
+      font-weight: 400;
+      margin: 0;
+    }
+
+    .header-actions {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+
+    .theme-btn {
+      width: 42px;
+      height: 42px;
+      border-radius: 10px;
+      border: 1px solid var(--border);
+      background: var(--surface);
+      color: var(--text);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.2rem;
+      transition: background 0.2s, border-color 0.2s;
+    }
+
+    .theme-btn:hover {
+      background: var(--mood-bg);
+      border-color: var(--accent);
+    }
+
+    .lock-btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 0.5rem;
+      border-radius: 8px;
+      border: 1px solid var(--border);
+      background: var(--surface);
+      color: var(--text-muted);
+      cursor: pointer;
+      font-family: inherit;
+      transition: background 0.2s, color 0.2s;
+    }
+
+    .lock-btn:hover {
+      background: var(--mood-bg);
+      color: var(--text);
+    }
+
+    .lock-btn .icon {
+      width: 1.15rem;
+      height: 1.15rem;
+    }
+
+    .help-btn {
+      width: 42px;
+      height: 42px;
+      border-radius: 10px;
+      border: 1px solid var(--border);
+      background: var(--surface);
+      color: var(--text);
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.2rem;
+      transition: background 0.2s, border-color 0.2s;
+    }
+
+    .help-btn:hover {
+      background: var(--mood-bg);
+      border-color: var(--accent);
+    }
+
+    .help-btn .icon {
+      width: 1.15rem;
+      height: 1.15rem;
+    }
+
+    /* Help dialog */
+    .help-dialog-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.4);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 1.5rem;
+      z-index: 1000;
+      opacity: 0;
+      visibility: hidden;
+      transition: opacity 0.2s, visibility 0.2s;
+    }
+
+    .help-dialog-overlay.is-open {
+      opacity: 1;
+      visibility: visible;
+    }
+
+    .help-dialog-content {
+      background: var(--surface);
+      border-radius: 14px;
+      padding: 1.5rem;
+      max-width: 420px;
+      width: 100%;
+      border: 1px solid var(--border);
+      box-shadow: 0 8px 32px var(--shadow);
+      position: relative;
+    }
+
+    .help-dialog-content h3 {
+      margin: 0 0 1rem 0;
+      font-size: 1.1rem;
+      font-weight: 600;
+      color: var(--text);
+    }
+
+    .help-dialog-content p {
+      margin: 0 0 0.75rem 0;
+      font-size: 0.95rem;
+      line-height: 1.5;
+      color: var(--text);
+    }
+
+    .help-dialog-content p:last-child {
+      margin-bottom: 0;
+    }
+
+    .help-dialog-close {
+      position: absolute;
+      top: 1rem;
+      right: 1rem;
+      width: 32px;
+      height: 32px;
+      border: none;
+      border-radius: 8px;
+      background: var(--mood-bg);
+      color: var(--text-muted);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.25rem;
+      line-height: 1;
+      transition: background 0.2s, color 0.2s;
+    }
+
+    .help-dialog-close:hover {
+      background: var(--border);
+      color: var(--text);
+    }
+
+    /* Calendar */
+    .calendar-section {
+      background: var(--surface);
+      border-radius: 14px;
+      padding: 1.25rem;
+      margin-bottom: 1.5rem;
+      border: 1px solid var(--border);
+      box-shadow: 0 2px 12px var(--shadow);
+    }
+
+    .calendar-section h2 {
+      font-size: 0.9rem;
+      font-weight: 600;
+      color: var(--text-muted);
+      margin: 0 0 1rem 0;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    .calendar-nav {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 1rem;
+    }
+
+    .calendar-nav button {
+      background: none;
+      border: none;
+      color: var(--text);
+      cursor: pointer;
+      padding: 0.4rem 0.6rem;
+      font-size: 1.2rem;
+      border-radius: 6px;
+      transition: background 0.2s;
+    }
+
+    .calendar-nav button:hover {
+      background: var(--mood-bg);
+    }
+
+    .calendar-month {
+      font-weight: 600;
+      font-size: 1rem;
+    }
+
+    .calendar-grid {
+      display: grid;
+      grid-template-columns: repeat(7, 1fr);
+      gap: 4px;
+      font-size: 0.8rem;
+    }
+
+    .calendar-weekday {
+      text-align: center;
+      color: var(--text-muted);
+      font-weight: 600;
+      padding: 0.25rem 0;
+    }
+
+    .calendar-day {
+      aspect-ratio: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+
+    .calendar-day:hover {
+      background: var(--mood-bg);
+    }
+
+    .calendar-day.empty {
+      cursor: default;
+      visibility: hidden;
+    }
+
+    .calendar-day.has-entry {
+      background: rgba(193, 127, 89, 0.2);
+      color: var(--accent);
+      font-weight: 600;
+    }
+
+    .calendar-day.has-entry:hover {
+      background: rgba(193, 127, 89, 0.35);
+    }
+
+    .calendar-day.selected {
+      background: var(--accent);
+      color: #fff;
+    }
+
+    /* New entry */
+    .new-entry {
+      background: var(--surface);
+      border-radius: 14px;
+      padding: 1.5rem;
+      margin-bottom: 1.5rem;
+      border: 1px solid var(--border);
+      box-shadow: 0 2px 12px var(--shadow);
+    }
+
+    .new-entry h2 {
+      font-size: 0.9rem;
+      font-weight: 600;
+      color: var(--text-muted);
+      margin: 0 0 1rem 0;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    .date-display {
+      font-size: 1.1rem;
+      font-weight: 600;
+      margin-bottom: 1rem;
+      color: var(--text);
+    }
+
+    .mood-row {
+      display: flex;
+      gap: 0.5rem;
+      flex-wrap: wrap;
+      margin-bottom: 1rem;
+    }
+
+    .mood-btn {
+      padding: 0.5rem 1rem;
+      border-radius: 20px;
+      border: 1px solid var(--border);
+      background: var(--mood-bg);
+      color: var(--text);
+      font-size: 0.9rem;
+      font-family: inherit;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .mood-btn:hover {
+      border-color: var(--accent);
+      color: var(--accent);
+    }
+
+    .mood-btn.selected {
+      background: var(--accent);
+      border-color: var(--accent);
+      color: #fff;
+    }
+
+    .thought-input {
+      width: 100%;
+      min-height: 100px;
+      padding: 1rem;
+      font-size: 1rem;
+      font-family: inherit;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      background: var(--bg);
+      color: var(--text);
+      resize: vertical;
+      transition: border-color 0.2s;
+    }
+
+    .thought-input:focus {
+      outline: none;
+      border-color: var(--accent);
+    }
+
+    .thought-input::placeholder {
+      color: var(--text-muted);
+    }
+
+    .save-row {
+      margin-top: 1rem;
+    }
+
+    .btn-save {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.4rem;
+      padding: 0.65rem 1.25rem;
+      font-size: 0.95rem;
+      border-radius: 8px;
+      background: var(--accent);
+      color: #fff;
+      border: none;
+      font-weight: 600;
+      font-family: inherit;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+
+    .btn-save:hover {
+      background: var(--accent-hover);
+    }
+
+    .btn-save .icon {
+      width: 1.15rem;
+      height: 1.15rem;
+    }
+
+    /* Entries list */
+    .entries-section h2 {
+      font-size: 0.9rem;
+      font-weight: 600;
+      color: var(--text-muted);
+      margin: 0 0 1rem 0;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    .entries-list {
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+    }
+
+    .entry-card {
+      background: var(--surface);
+      border-radius: 12px;
+      padding: 1.25rem;
+      border: 1px solid var(--border);
+      box-shadow: 0 2px 8px var(--shadow);
+      transition: border-color 0.2s;
+    }
+
+    .entry-card:hover {
+      border-color: var(--accent);
+    }
+
+    .entry-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 0.5rem;
+    }
+
+    .entry-date {
+      font-weight: 600;
+      font-size: 1rem;
+      color: var(--text);
+    }
+
+    .entry-mood {
+      font-size: 0.85rem;
+      padding: 0.25rem 0.6rem;
+      border-radius: 12px;
+      background: var(--mood-bg);
+      color: var(--text);
+    }
+
+    .entry-thought {
+      font-size: 0.95rem;
+      line-height: 1.5;
+      color: var(--text);
+      white-space: pre-wrap;
+      margin: 0;
+    }
+
+    .entry-card-actions {
+      display: flex;
+      justify-content: flex-end;
+      gap: 0.5rem;
+      margin-top: 0.75rem;
+      padding-top: 0.5rem;
+      border-top: 1px solid var(--border);
+    }
+
+    .btn-delete-entry {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 0.4rem;
+      border-radius: 6px;
+      border: 1px solid var(--border);
+      background: var(--surface);
+      color: var(--text-muted);
+      cursor: pointer;
+      font-family: inherit;
+      transition: background 0.2s, color 0.2s, border-color 0.2s;
+    }
+
+    .btn-delete-entry:hover {
+      background: var(--mood-bg);
+      color: var(--error);
+      border-color: var(--error);
+    }
+
+    .btn-delete-entry .icon {
+      width: 1rem;
+      height: 1rem;
+    }
+
+    .entries-section-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 0.75rem;
+      margin-bottom: 1rem;
+    }
+
+    .entries-section-header h2 {
+      margin: 0;
+    }
+
+    .btn-delete-old {
+      padding: 0.4rem 0.75rem;
+      font-size: 0.85rem;
+      border-radius: 8px;
+      border: 1px solid var(--border);
+      background: var(--surface);
+      color: var(--text-muted);
+      cursor: pointer;
+      font-family: inherit;
+      transition: background 0.2s, color 0.2s;
+    }
+
+    .btn-delete-old:hover {
+      background: var(--mood-bg);
+      color: var(--error);
+    }
+
+    .empty-state {
+      text-align: center;
+      padding: 2rem;
+      color: var(--text-muted);
+      font-size: 0.95rem;
+    }
+
+    .hidden {
+      display: none !important;
+    }
+  </style>
+</head>
+<body>
+  <div class="app">
+    <!-- Lock screen: password prompt -->
+    <section id="lock-screen" class="lock-screen">
+      <h1>Secret Diary</h1>
+      <p class="subtitle">Your encrypted mood journal</p>
+      <form id="lock-form" class="lock-form">
+        <div id="setup-fields" class="hidden">
+          <label for="password">Choose a password</label>
+          <input type="password" id="password" name="password" placeholder="Enter a strong password" autocomplete="new-password" required>
+          <label for="hint">Password hint (stored locally, not secret)</label>
+          <input type="text" id="hint" name="hint" placeholder="e.g. My pet's name" autocomplete="off">
+        </div>
+        <div id="unlock-fields">
+          <label for="unlock-password">Password</label>
+          <input type="password" id="unlock-password" name="password" placeholder="Enter your password" autocomplete="current-password" required>
+          <p id="hint-display" class="hint-msg hidden"></p>
+        </div>
+        <button type="submit" class="btn btn-primary" id="submit-btn">Unlock</button>
+        <p id="lock-error" class="error-msg hidden"></p>
+      </form>
+    </section>
+
+    <!-- Journal (visible after unlock) -->
+    <main id="journal" class="hidden">
+      <header class="journal-header">
+        <h1>Secret Diary</h1>
+        <div class="header-actions">
+          <button type="button" class="help-btn" id="help-btn" title="Help" aria-label="Help"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg></button>
+          <button type="button" class="theme-btn" id="theme-btn" title="Toggle theme" aria-label="Toggle theme">☀️</button>
+          <button type="button" class="lock-btn" id="lock-btn" title="Lock journal" aria-label="Lock journal"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg></button>
+        </div>
+      </header>
+
+      <section class="calendar-section">
+        <h2>Calendar</h2>
+        <div class="calendar-nav">
+          <button type="button" id="cal-prev" aria-label="Previous month">←</button>
+          <span class="calendar-month" id="cal-month"></span>
+          <button type="button" id="cal-next" aria-label="Next month">→</button>
+        </div>
+        <div class="calendar-grid" id="calendar-grid"></div>
+      </section>
+
+      <section class="new-entry">
+        <h2>New entry</h2>
+        <p class="date-display" id="entry-date-label"></p>
+        <div class="mood-row" id="mood-row">
+          <button type="button" class="mood-btn" data-mood="great" title="Great">😊 Great</button>
+          <button type="button" class="mood-btn" data-mood="good" title="Good">🙂 Good</button>
+          <button type="button" class="mood-btn" data-mood="okay" title="Okay">😐 Okay</button>
+          <button type="button" class="mood-btn" data-mood="low" title="Low">😔 Low</button>
+          <button type="button" class="mood-btn" data-mood="anxious" title="Anxious">😰 Anxious</button>
+        </div>
+        <textarea class="thought-input" id="thought-input" placeholder="How are you feeling? What's on your mind?"></textarea>
+        <div class="save-row">
+          <button type="button" class="btn-save" id="save-entry" title="Save entry" aria-label="Save entry">
+            <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/></svg>
+          </button>
+        </div>
+      </section>
+
+      <section class="entries-section">
+        <div class="entries-section-header">
+          <h2>Recent entries</h2>
+          <button type="button" class="btn-delete-old" id="delete-old-entries" title="Remove all entries older than 6 months">Delete entries older than 6 months</button>
+        </div>
+        <div class="entries-list" id="entries-list"></div>
+        <p id="empty-state" class="empty-state hidden">No entries yet. Write something above.</p>
+      </section>
+    </main>
+
+    <!-- Help dialog -->
+    <div class="help-dialog-overlay" id="help-dialog" role="dialog" aria-modal="true" aria-labelledby="help-dialog-title">
+      <div class="help-dialog-content" id="help-dialog-content">
+        <button type="button" class="help-dialog-close" id="help-dialog-close" aria-label="Close">×</button>
+        <h3 id="help-dialog-title">About your diary</h3>
+        <p>Your diary information is never sent over the network. It is only stored in this browser on this device and is encrypted, so it is totally private.</p>
+        <p>There is no way to read the diary without your password. Be sure to keep your password safe—if you forget it, your entries cannot be recovered.</p>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const STORAGE_KEYS = {
+      HINT: 'pd_hint',
+      SALT: 'pd_salt',
+      DATA: 'pd_data',
+      THEME: 'pd_theme',
+    };
+
+    const MOODS = ['great', 'good', 'okay', 'low', 'anxious'];
+    const MOOD_EMOJIS = { great: '😊', good: '🙂', okay: '😐', low: '😔', anxious: '😰' };
+
+    let key = null; // CryptoKey held in memory after unlock
+    let entries = {}; // { "YYYY-MM-DD": [ { mood, thought }, ... ] }
+    let selectedDate = null; // current date for new entry / calendar selection
+    let calendarMonth = null; // Date object for calendar view
+
+    // ---------- Crypto ----------
+    async function deriveKey(password, salt) {
+      const enc = new TextEncoder();
+      const keyMaterial = await crypto.subtle.importKey(
+        'raw',
+        enc.encode(password),
+        'PBKDF2',
+        false,
+        ['deriveBits', 'deriveKey'],
+      );
+      return crypto.subtle.deriveKey(
+        {
+          name: 'PBKDF2',
+          salt,
+          iterations: 310000,
+          hash: 'SHA-256',
+        },
+        keyMaterial,
+        { name: 'AES-GCM', length: 256 },
+        false,
+        ['encrypt', 'decrypt'],
+      );
+    }
+
+    function base64ToBuf(b64) {
+      const bin = atob(b64);
+      const buf = new Uint8Array(bin.length);
+      for (let i = 0; i < bin.length; i++) buf[i] = bin.charCodeAt(i);
+      return buf;
+    }
+
+    function bufToBase64(buf) {
+      let bin = '';
+      const arr = new Uint8Array(buf);
+      for (let i = 0; i < arr.length; i++) bin += String.fromCharCode(arr[i]);
+      return btoa(bin);
+    }
+
+    async function encrypt(plaintext) {
+      const iv = crypto.getRandomValues(new Uint8Array(12));
+      const enc = new TextEncoder();
+      const cipher = await crypto.subtle.encrypt(
+        { name: 'AES-GCM', iv, tagLength: 128 },
+        key,
+        enc.encode(plaintext),
+      );
+      return bufToBase64(iv) + '.' + bufToBase64(cipher);
+    }
+
+    async function decrypt(ciphertext) {
+      const [ivB64, cipherB64] = ciphertext.split('.');
+      const iv = base64ToBuf(ivB64);
+      const cipher = base64ToBuf(cipherB64);
+      const dec = await crypto.subtle.decrypt(
+        { name: 'AES-GCM', iv, tagLength: 128 },
+        key,
+        cipher,
+      );
+      return new TextDecoder().decode(dec);
+    }
+
+    // ---------- Storage ----------
+    function getStoredHint() {
+      return localStorage.getItem(STORAGE_KEYS.HINT);
+    }
+
+    function getStoredSalt() {
+      const s = localStorage.getItem(STORAGE_KEYS.SALT);
+      return s ? base64ToBuf(s) : null;
+    }
+
+    function getStoredData() {
+      return localStorage.getItem(STORAGE_KEYS.DATA);
+    }
+
+    function setStoredHint(hint) {
+      if (hint != null && hint.trim()) localStorage.setItem(STORAGE_KEYS.HINT, hint.trim());
+    }
+
+    function setStoredSalt(salt) {
+      localStorage.setItem(STORAGE_KEYS.SALT, bufToBase64(salt));
+    }
+
+    async function saveEntriesToStorage() {
+      const payload = JSON.stringify(entries);
+      const encrypted = await encrypt(payload);
+      localStorage.setItem(STORAGE_KEYS.DATA, encrypted);
+    }
+
+    async function loadEntriesFromStorage() {
+      const raw = getStoredData();
+      if (!raw) {
+        entries = {};
+        return;
+      }
+      const payload = await decrypt(raw);
+      entries = JSON.parse(payload);
+      if (typeof entries !== 'object' || entries === null) entries = {};
+      // Normalize: support legacy single-entry-per-day and ensure arrays
+      for (const k of Object.keys(entries)) {
+        const v = entries[k];
+        if (Array.isArray(v)) {
+          entries[k] = v.filter((e) => e && (e.mood != null || e.thought != null));
+        } else if (v && typeof v === 'object' && (v.mood != null || v.thought != null)) {
+          entries[k] = [v];
+        } else {
+          delete entries[k];
+        }
+      }
+    }
+
+    // ---------- Theme ----------
+    function getTheme() {
+      const t = localStorage.getItem(STORAGE_KEYS.THEME);
+      if (t === 'dark' || t === 'light') return t;
+      return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+    }
+
+    function setTheme(theme) {
+      document.documentElement.setAttribute('data-theme', theme === 'dark' ? 'dark' : '');
+      localStorage.setItem(STORAGE_KEYS.THEME, theme);
+      const btn = document.getElementById('theme-btn');
+      if (btn) btn.textContent = theme === 'dark' ? '🌙' : '☀️';
+    }
+
+    function toggleTheme() {
+      setTheme(getTheme() === 'dark' ? 'light' : 'dark');
+    }
+
+    // ---------- Dates ----------
+    function dateKey(d) {
+      const y = d.getFullYear();
+      const m = String(d.getMonth() + 1).padStart(2, '0');
+      const day = String(d.getDate()).padStart(2, '0');
+      return `${y}-${m}-${day}`;
+    }
+
+    function formatDateLabel(key) {
+      const [y, m, day] = key.split('-').map(Number);
+      const d = new Date(y, m - 1, day);
+      return d.toLocaleDateString(undefined, { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
+    }
+
+    // ---------- Lock / Unlock ----------
+    function showLockScreen(isFirstUse) {
+      document.getElementById('lock-screen').classList.remove('hidden');
+      document.getElementById('journal').classList.add('hidden');
+      document.getElementById('setup-fields').classList.toggle('hidden', !isFirstUse);
+      document.getElementById('unlock-fields').classList.toggle('hidden', isFirstUse);
+      document.getElementById('submit-btn').textContent = isFirstUse ? 'Create journal' : 'Unlock';
+      document.getElementById('lock-error').classList.add('hidden');
+      document.getElementById('hint-display').classList.add('hidden');
+      // Only the visible password field should be required so the browser can focus it
+      const passwordEl = document.getElementById('password');
+      const unlockEl = document.getElementById('unlock-password');
+      if (passwordEl) passwordEl.required = isFirstUse;
+      if (unlockEl) unlockEl.required = !isFirstUse;
+      if (!isFirstUse) {
+        const hint = getStoredHint();
+        const el = document.getElementById('hint-display');
+        if (hint) {
+          el.textContent = `Hint: ${hint}`;
+          el.classList.remove('hidden');
+        }
+      }
+      key = null;
+    }
+
+    function showJournal() {
+      document.getElementById('lock-screen').classList.add('hidden');
+      document.getElementById('journal').classList.remove('hidden');
+      setTheme(getTheme());
+      setSelectedDate(new Date());
+      renderCalendar();
+      renderEntries();
+    }
+
+    async function handleLockSubmit(e) {
+      e.preventDefault();
+      const isFirstUse = !getStoredSalt();
+      const passwordEl = document.getElementById(isFirstUse ? 'password' : 'unlock-password');
+      const hintEl = document.getElementById('hint');
+      const password = passwordEl?.value ?? '';
+      const errorEl = document.getElementById('lock-error');
+
+      errorEl.classList.add('hidden');
+      if (!password) {
+        errorEl.textContent = 'Please enter a password.';
+        errorEl.classList.remove('hidden');
+        return;
+      }
+
+      if (isFirstUse) {
+        const salt = crypto.getRandomValues(new Uint8Array(16));
+        key = await deriveKey(password, salt);
+        setStoredSalt(salt);
+        setStoredHint(hintEl?.value ?? '');
+        entries = {};
+        await saveEntriesToStorage();
+        passwordEl.value = '';
+        if (hintEl) hintEl.value = '';
+        showJournal();
+        return;
+      }
+
+      const salt = getStoredSalt();
+      if (!salt) {
+        errorEl.textContent = 'No journal data found.';
+        errorEl.classList.remove('hidden');
+        return;
+      }
+      key = await deriveKey(password, salt);
+      try {
+        await loadEntriesFromStorage();
+        passwordEl.value = '';
+        showJournal();
+      } catch (_) {
+        key = null;
+        errorEl.textContent = 'Wrong password or corrupted data.';
+        errorEl.classList.remove('hidden');
+      }
+    }
+
+    function lockJournal() {
+      showLockScreen(false);
+    }
+
+    function openHelpDialog() {
+      document.getElementById('help-dialog').classList.add('is-open');
+    }
+
+    function closeHelpDialog() {
+      document.getElementById('help-dialog').classList.remove('is-open');
+    }
+
+    // ---------- Selected date & entry form ----------
+    function setSelectedDate(d) {
+      selectedDate = new Date(d.getFullYear(), d.getMonth(), d.getDate());
+      document.getElementById('entry-date-label').textContent = formatDateLabel(dateKey(selectedDate));
+      // Clear form for adding a new entry (multiple entries per day)
+      document.getElementById('mood-row').querySelectorAll('.mood-btn').forEach((btn) => btn.classList.remove('selected'));
+      document.getElementById('thought-input').value = '';
+      renderCalendar();
+    }
+
+    // ---------- Mood buttons ----------
+    function initMoodButtons() {
+      document.getElementById('mood-row').addEventListener('click', (e) => {
+        const btn = e.target.closest('.mood-btn');
+        if (!btn) return;
+        document.querySelectorAll('#mood-row .mood-btn').forEach((b) => b.classList.remove('selected'));
+        btn.classList.add('selected');
+      });
+    }
+
+    // ---------- Save entry ----------
+    async function saveEntry() {
+      if (!key) return;
+      const moodBtn = document.querySelector('#mood-row .mood-btn.selected');
+      const mood = moodBtn ? moodBtn.dataset.mood : 'okay';
+      const thought = document.getElementById('thought-input').value.trim();
+      const keyStr = dateKey(selectedDate);
+      if (!entries[keyStr]) entries[keyStr] = [];
+      entries[keyStr].push({ mood, thought });
+      await saveEntriesToStorage();
+      renderEntries();
+      renderCalendar();
+      document.getElementById('thought-input').value = '';
+      document.getElementById('mood-row').querySelectorAll('.mood-btn').forEach((btn) => btn.classList.remove('selected'));
+    }
+
+    // ---------- Calendar ----------
+    function renderCalendar() {
+      const grid = document.getElementById('calendar-grid');
+      if (!calendarMonth) calendarMonth = new Date(selectedDate.getFullYear(), selectedDate.getMonth(), 1);
+
+      const year = calendarMonth.getFullYear();
+      const month = calendarMonth.getMonth();
+      const first = new Date(year, month, 1);
+      const last = new Date(year, month + 1, 0);
+      const startPad = first.getDay();
+
+      document.getElementById('cal-month').textContent = first.toLocaleDateString(undefined, { month: 'long', year: 'numeric' });
+
+      const weekdays = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+      let html = weekdays.map((w) => `<span class="calendar-weekday">${w}</span>`).join('');
+
+      for (let i = 0; i < startPad; i++) html += '<span class="calendar-day empty"></span>';
+      for (let d = 1; d <= last.getDate(); d++) {
+        const date = new Date(year, month, d);
+        const keyStr = dateKey(date);
+        const dayEntries = entries[keyStr];
+        const hasEntry = Array.isArray(dayEntries) ? dayEntries.length > 0 : (dayEntries && (dayEntries.mood || dayEntries.thought));
+        const selected = selectedDate && dateKey(selectedDate) === keyStr;
+        html += `<button type="button" class="calendar-day ${hasEntry ? 'has-entry' : ''} ${selected ? 'selected' : ''}" data-date="${keyStr}">${d}</button>`;
+      }
+      grid.innerHTML = html;
+
+      grid.querySelectorAll('.calendar-day[data-date]').forEach((btn) => {
+        btn.addEventListener('click', () => {
+          const keyStr = btn.dataset.date;
+          const [y, m, day] = keyStr.split('-').map(Number);
+          setSelectedDate(new Date(y, m - 1, day));
+        });
+      });
+    }
+
+    document.getElementById('cal-prev').addEventListener('click', () => {
+      calendarMonth = new Date(calendarMonth.getFullYear(), calendarMonth.getMonth() - 1, 1);
+      renderCalendar();
+    });
+    document.getElementById('cal-next').addEventListener('click', () => {
+      calendarMonth = new Date(calendarMonth.getFullYear(), calendarMonth.getMonth() + 1, 1);
+      renderCalendar();
+    });
+
+    // ---------- Entries list (newest first: by date desc, then newest-in-day first) ----------
+    function renderEntries() {
+      const list = document.getElementById('entries-list');
+      const empty = document.getElementById('empty-state');
+      const items = [];
+      const keys = Object.keys(entries).sort().reverse();
+      for (const k of keys) {
+        const arr = entries[k];
+        const dayList = Array.isArray(arr) ? arr : (arr && (arr.mood != null || arr.thought != null) ? [arr] : []);
+        for (let i = dayList.length - 1; i >= 0; i--) {
+          items.push({ dateKey: k, entry: dayList[i], indexInDay: i });
+        }
+      }
+
+      if (items.length === 0) {
+        list.innerHTML = '';
+        empty.classList.remove('hidden');
+        return;
+      }
+      empty.classList.add('hidden');
+      list.innerHTML = items
+        .map(
+          ({ dateKey, entry, indexInDay }) =>
+            `<article class="entry-card" data-date="${dateKey}">
+              <div class="entry-header">
+                <span class="entry-date">${formatDateLabel(dateKey)}</span>
+                <span class="entry-mood" title="${entry.mood || ''}">${entry.mood ? (MOOD_EMOJIS[entry.mood] || entry.mood) : '—'}</span>
+              </div>
+              <p class="entry-thought">${escapeHtml(entry.thought || '')}</p>
+              <div class="entry-card-actions">
+                <button type="button" class="btn-delete-entry" data-date="${dateKey}" data-index="${indexInDay}" title="Delete this entry" aria-label="Delete entry"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 6h18M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2m3 0v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6h14z"/><line x1="10" y1="11" x2="10" y2="17"/><line x1="14" y1="11" x2="14" y2="17"/></svg></button>
+              </div>
+            </article>`,
+        )
+        .join('');
+
+      list.querySelectorAll('.entry-card').forEach((card) => {
+        card.addEventListener('click', (e) => {
+          if (e.target.closest('.btn-delete-entry')) return;
+          const [y, m, day] = card.dataset.date.split('-').map(Number);
+          setSelectedDate(new Date(y, m - 1, day));
+        });
+      });
+      list.querySelectorAll('.btn-delete-entry').forEach((btn) => {
+        btn.addEventListener('click', (e) => {
+          e.preventDefault();
+          e.stopPropagation();
+          deleteEntry(btn.dataset.date, parseInt(btn.dataset.index, 10));
+        });
+      });
+    }
+
+    async function deleteEntry(dateKey, indexInDay) {
+      if (!key) return;
+      const arr = entries[dateKey];
+      if (!Array.isArray(arr) || indexInDay < 0 || indexInDay >= arr.length) return;
+      arr.splice(indexInDay, 1);
+      if (arr.length === 0) delete entries[dateKey];
+      await saveEntriesToStorage();
+      renderEntries();
+      renderCalendar();
+    }
+
+    function dateKeyToDate(dateKey) {
+      const [y, m, day] = dateKey.split('-').map(Number);
+      return new Date(y, m - 1, day);
+    }
+
+    async function deleteEntriesOlderThanSixMonths() {
+      if (!key) return;
+      const cutoff = new Date();
+      cutoff.setMonth(cutoff.getMonth() - 6);
+      let count = 0;
+      for (const k of Object.keys(entries)) {
+        const d = dateKeyToDate(k);
+        if (d < cutoff) count += Array.isArray(entries[k]) ? entries[k].length : 1;
+      }
+      if (count === 0) {
+        alert('No entries older than 6 months.');
+        return;
+      }
+      const msg = count === 1
+        ? 'Delete 1 entry older than 6 months? This cannot be undone.'
+        : `Delete ${count} entries older than 6 months? This cannot be undone.`;
+      if (!confirm(msg)) return;
+      for (const k of Object.keys(entries)) {
+        const d = dateKeyToDate(k);
+        if (d < cutoff) delete entries[k];
+      }
+      await saveEntriesToStorage();
+      renderEntries();
+      renderCalendar();
+    }
+
+    function escapeHtml(s) {
+      const div = document.createElement('div');
+      div.textContent = s;
+      return div.innerHTML;
+    }
+
+    // ---------- Init ----------
+    document.getElementById('lock-form').addEventListener('submit', handleLockSubmit);
+    document.getElementById('theme-btn').addEventListener('click', toggleTheme);
+    document.getElementById('lock-btn').addEventListener('click', lockJournal);
+    document.getElementById('help-btn').addEventListener('click', openHelpDialog);
+    document.getElementById('help-dialog-close').addEventListener('click', closeHelpDialog);
+    document.getElementById('help-dialog').addEventListener('click', (e) => {
+      if (e.target.id === 'help-dialog') closeHelpDialog();
+    });
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && document.getElementById('help-dialog').classList.contains('is-open')) closeHelpDialog();
+    });
+    document.getElementById('save-entry').addEventListener('click', saveEntry);
+    document.getElementById('delete-old-entries').addEventListener('click', deleteEntriesOlderThanSixMonths);
+    initMoodButtons();
+
+    // Apply saved theme immediately so lock screen matches preference
+    setTheme(getTheme());
+
+    if (getStoredSalt()) {
+      showLockScreen(false);
+    } else {
+      showLockScreen(true);
+    }
+  </script>
+</body>
+</html>
