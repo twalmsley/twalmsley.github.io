@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Shopping List</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <header class="header">
+    <h1 class="title">Shopping List</h1>
+    <button type="button" class="theme-toggle" aria-label="Toggle light/dark theme" title="Toggle theme">
+      <svg class="icon-sun" aria-hidden="true" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>
+      <svg class="icon-moon" aria-hidden="true" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+    </button>
+  </header>
+
+  <nav class="tabs" role="tablist">
+    <button type="button" class="tab active" role="tab" id="tab-master" aria-selected="true" aria-controls="panel-master" data-tab="master">
+      <svg class="tab-icon" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/><path d="M8 7h8M8 11h8"/></svg>
+      <span class="tab-label">Master List (<span id="count-master">0</span>)</span>
+    </button>
+    <button type="button" class="tab" role="tab" id="tab-categories" aria-selected="false" aria-controls="panel-categories" data-tab="categories">
+      <svg class="tab-icon" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h6v6H4zM14 4h6v6h-6zM4 14h6v6H4zM14 14h6v6h-6z"/></svg>
+      <span class="tab-label">Categories (<span id="count-categories">0</span>)</span>
+    </button>
+    <button type="button" class="tab" role="tab" id="tab-shopping" aria-selected="false" aria-controls="panel-shopping" data-tab="shopping">
+      <svg class="tab-icon" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg>
+      <span class="tab-label">Shopping List (<span id="count-shopping">0</span>)</span>
+    </button>
+  </nav>
+
+  <main class="main">
+    <!-- Master List panel -->
+    <section id="panel-master" class="panel active" role="tabpanel" aria-labelledby="tab-master">
+      <div class="panel-toolbar">
+        <div class="sort-controls">
+          <span class="sort-label">Sort:</span>
+          <button type="button" class="sort-btn active" data-sort="name">By name</button>
+          <button type="button" class="sort-btn" data-sort="category">By category</button>
+        </div>
+        <button type="button" class="btn-add" id="add-master-item" aria-label="Add item">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+          Add item
+        </button>
+      </div>
+      <ul class="list list-master" id="list-master"></ul>
+    </section>
+
+    <!-- Categories panel -->
+    <section id="panel-categories" class="panel" role="tabpanel" aria-labelledby="tab-categories" hidden>
+      <div class="panel-toolbar">
+        <button type="button" class="btn-add" id="add-category" aria-label="Add category">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+          Add category
+        </button>
+      </div>
+      <ul class="list list-categories" id="list-categories"></ul>
+    </section>
+
+    <!-- Shopping List panel -->
+    <section id="panel-shopping" class="panel" role="tabpanel" aria-labelledby="tab-shopping" hidden>
+      <div class="panel-toolbar">
+        <div class="sort-controls">
+          <span class="sort-label">Sort:</span>
+          <button type="button" class="sort-btn active" data-sort="name" data-list="shopping">By name</button>
+          <button type="button" class="sort-btn" data-sort="category" data-list="shopping">By category</button>
+        </div>
+      </div>
+      <ul class="list list-shopping" id="list-shopping"></ul>
+    </section>
+  </main>
+
+  <!-- Add/Edit item modal -->
+  <dialog class="modal" id="modal-item">
+    <form method="dialog" id="form-item">
+      <h2 id="modal-item-title">Add item</h2>
+      <label for="item-name">Name</label>
+      <input type="text" id="item-name" name="name" required autocomplete="off">
+      <label for="item-category">Category</label>
+      <select id="item-category" name="categoryId">
+        <option value="">— None —</option>
+      </select>
+      <input type="hidden" id="item-id" name="id">
+      <div class="modal-actions">
+        <button type="button" class="btn btn-secondary" data-close>Cancel</button>
+        <button type="submit" class="btn btn-primary">Save</button>
+      </div>
+    </form>
+  </dialog>
+
+  <!-- Add/Edit category modal -->
+  <dialog class="modal" id="modal-category">
+    <form method="dialog" id="form-category">
+      <h2 id="modal-category-title">Add category</h2>
+      <label for="category-name">Name</label>
+      <input type="text" id="category-name" name="name" required autocomplete="off">
+      <input type="hidden" id="category-id" name="id">
+      <div class="modal-actions">
+        <button type="button" class="btn btn-secondary" data-close>Cancel</button>
+        <button type="submit" class="btn btn-primary">Save</button>
+      </div>
+    </form>
+  </dialog>
+
+  <script src="app.js"></script>
+</body>
+</html>
