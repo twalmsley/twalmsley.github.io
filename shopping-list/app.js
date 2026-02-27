@@ -64,6 +64,65 @@
     }
   }
 
+  const EXPORT_FORMAT_VERSION = 1;
+  const MAX_IMPORT_BYTES = 2 * 1024 * 1024; // 2MB
+
+  function exportToJson() {
+    const payload = {
+      version: EXPORT_FORMAT_VERSION,
+      categories: state.categories,
+      master: state.master,
+      cart: state.cart,
+    };
+    const json = JSON.stringify(payload, null, 2);
+    const blob = new Blob([json], { type: "application/json" });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = "shopping-list.json";
+    a.click();
+    URL.revokeObjectURL(url);
+  }
+
+  function isValidImportData(data) {
+    if (!data || typeof data !== "object") return false;
+    if (data.version !== EXPORT_FORMAT_VERSION) return false;
+    if (!Array.isArray(data.categories) || !Array.isArray(data.master) || !Array.isArray(data.cart)) return false;
+    return true;
+  }
+
+  function importFromJson(file) {
+    if (!file) return;
+    if (file.size > MAX_IMPORT_BYTES) {
+      alert("File is too large. Maximum size is 2MB.");
+      return;
+    }
+    const reader = new FileReader();
+    reader.onload = function () {
+      try {
+        const data = JSON.parse(reader.result);
+        if (!isValidImportData(data)) {
+          alert("Invalid file. The file must be a valid shopping list export (version " + EXPORT_FORMAT_VERSION + ").");
+          return;
+        }
+        if (!confirm("Import will replace your current data. Continue?")) return;
+        state.categories = data.categories;
+        state.master = data.master;
+        state.cart = data.cart;
+        saveToStorage();
+        updateCounts();
+        renderMasterList();
+        renderCategories();
+        renderShoppingList();
+        refreshCategorySelect();
+        alert("Import complete.");
+      } catch (e) {
+        alert("Invalid file. Could not read the JSON.");
+      }
+    };
+    reader.readAsText(file);
+  }
+
   function getCategoryName(categoryId) {
     if (!categoryId) return null;
     const cat = state.categories.find(function (c) { return c.id === categoryId; });
@@ -635,6 +694,21 @@
 
     document.getElementById("add-master-item").addEventListener("click", function () { openAddItem(); });
     document.getElementById("add-category").addEventListener("click", openAddCategory);
+
+    const btnExport = document.getElementById("btn-export");
+    const btnImport = document.getElementById("btn-import");
+    const importFileInput = document.getElementById("import-file");
+    if (btnExport) btnExport.addEventListener("click", exportToJson);
+    if (btnImport && importFileInput) {
+      btnImport.addEventListener("click", function () { importFileInput.click(); });
+      importFileInput.addEventListener("change", function () {
+        const file = importFileInput.files && importFileInput.files[0];
+        if (file) {
+          importFromJson(file);
+          importFileInput.value = "";
+        }
+      });
+    }
 
     document.querySelectorAll("#panel-master .sort-btn").forEach(function (b) {
       b.classList.toggle("active", b.dataset.sort === state.masterSort);
