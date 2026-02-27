@@ -21,23 +21,32 @@
   </header>
 
   <nav class="tabs" role="tablist">
-    <button type="button" class="tab active" role="tab" id="tab-master" aria-selected="true" aria-controls="panel-master" data-tab="master">
-      <svg class="tab-icon" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/><path d="M8 7h8M8 11h8"/></svg>
+    <button type="button" class="tab" role="tab" id="tab-master" aria-selected="false" aria-controls="panel-master" data-tab="master">
+      <span class="tab-icon-wrap">
+        <svg class="tab-icon" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/><path d="M8 7h8M8 11h8"/></svg>
+        <span class="tab-count-badge" id="count-master-badge" aria-hidden="true">0</span>
+      </span>
       <span class="tab-label">Master List (<span id="count-master">0</span>)</span>
     </button>
     <button type="button" class="tab" role="tab" id="tab-categories" aria-selected="false" aria-controls="panel-categories" data-tab="categories">
-      <svg class="tab-icon" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h6v6H4zM14 4h6v6h-6zM4 14h6v6H4zM14 14h6v6h-6z"/></svg>
+      <span class="tab-icon-wrap">
+        <svg class="tab-icon" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h6v6H4zM14 4h6v6h-6zM4 14h6v6H4zM14 14h6v6h-6z"/></svg>
+        <span class="tab-count-badge" id="count-categories-badge" aria-hidden="true">0</span>
+      </span>
       <span class="tab-label">Categories (<span id="count-categories">0</span>)</span>
     </button>
-    <button type="button" class="tab" role="tab" id="tab-shopping" aria-selected="false" aria-controls="panel-shopping" data-tab="shopping">
-      <svg class="tab-icon" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg>
+    <button type="button" class="tab active" role="tab" id="tab-shopping" aria-selected="true" aria-controls="panel-shopping" data-tab="shopping">
+      <span class="tab-icon-wrap">
+        <svg class="tab-icon" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg>
+        <span class="tab-count-badge" id="count-shopping-badge" aria-hidden="true">0</span>
+      </span>
       <span class="tab-label">Shopping List (<span id="count-shopping">0</span>)</span>
     </button>
   </nav>
 
   <main class="main">
     <!-- Master List panel -->
-    <section id="panel-master" class="panel active" role="tabpanel" aria-labelledby="tab-master">
+    <section id="panel-master" class="panel" role="tabpanel" aria-labelledby="tab-master" hidden>
       <div class="panel-toolbar">
         <div class="sort-controls">
           <span class="sort-label">Sort:</span>
@@ -64,7 +73,7 @@
     </section>
 
     <!-- Shopping List panel -->
-    <section id="panel-shopping" class="panel" role="tabpanel" aria-labelledby="tab-shopping" hidden>
+    <section id="panel-shopping" class="panel active" role="tabpanel" aria-labelledby="tab-shopping">
       <div class="panel-toolbar">
         <div class="sort-controls">
           <span class="sort-label">Sort:</span>

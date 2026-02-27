@@ -210,12 +210,21 @@
   }
 
   function updateCounts() {
+    const masterCount = state.master.length;
+    const catCount = state.categories.length;
+    const shopCount = state.cart.length;
     const masterEl = document.getElementById("count-master");
     const catEl = document.getElementById("count-categories");
     const shopEl = document.getElementById("count-shopping");
-    if (masterEl) masterEl.textContent = state.master.length;
-    if (catEl) catEl.textContent = state.categories.length;
-    if (shopEl) shopEl.textContent = state.cart.length;
+    if (masterEl) masterEl.textContent = masterCount;
+    if (catEl) catEl.textContent = catCount;
+    if (shopEl) shopEl.textContent = shopCount;
+    const masterBadge = document.getElementById("count-master-badge");
+    const catBadge = document.getElementById("count-categories-badge");
+    const shopBadge = document.getElementById("count-shopping-badge");
+    if (masterBadge) masterBadge.textContent = masterCount;
+    if (catBadge) catBadge.textContent = catCount;
+    if (shopBadge) shopBadge.textContent = shopCount;
   }
 
   function renderMasterList() {
