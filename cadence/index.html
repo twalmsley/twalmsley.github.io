@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Cadence — Stride Calculator</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Source+Sans+3:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <div class="atmosphere" aria-hidden="true"></div>
+
+    <main class="page">
+      <header class="brand">
+        <p class="brand__name">Cadence</p>
+        <p class="brand__tagline">
+          Dial in race distance, target time, and cadence — find the stride that hits your goal.
+        </p>
+        <p class="brand__tagline">
+          Or click on a target time for one of the races in the table below.
+        </p>
+      </header>
+
+      <div class="workspace">
+        <section class="calculator" aria-labelledby="calculator-heading">
+          <h2 id="calculator-heading" class="visually-hidden">Calculator</h2>
+
+          <div class="fields">
+            <div class="field">
+              <div class="field__header">
+                <label for="distance">Race distance</label>
+                <button type="button" class="btn btn--ghost" data-reset="distance">Reset</button>
+              </div>
+              <div class="field__control">
+                <input
+                  id="distance"
+                  name="distance"
+                  type="number"
+                  min="1"
+                  step="1"
+                  inputmode="decimal"
+                  value="5000"
+                />
+                <span class="field__unit">metres</span>
+              </div>
+            </div>
+
+            <fieldset class="field field--time">
+              <div class="field__header">
+                <legend>Target time</legend>
+                <button type="button" class="btn btn--ghost" data-reset="time">Reset</button>
+              </div>
+              <div class="time-inputs" role="group" aria-label="Hours, minutes, and seconds">
+                <div class="time-part">
+                  <label for="hours" class="time-part__label">Hours</label>
+                  <input id="hours" name="hours" type="number" min="0" max="99" step="1" value="0" />
+                </div>
+                <span class="time-sep" aria-hidden="true">:</span>
+                <div class="time-part">
+                  <label for="minutes" class="time-part__label">Minutes</label>
+                  <input id="minutes" name="minutes" type="number" min="0" max="59" step="1" value="20" />
+                </div>
+                <span class="time-sep" aria-hidden="true">:</span>
+                <div class="time-part">
+                  <label for="seconds" class="time-part__label">Seconds</label>
+                  <input id="seconds" name="seconds" type="number" min="0" max="59" step="1" value="0" />
+                </div>
+              </div>
+            </fieldset>
+
+            <div class="field">
+              <div class="field__header">
+                <label for="cadence">Cadence</label>
+                <button type="button" class="btn btn--ghost" data-reset="cadence">Reset</button>
+              </div>
+              <div class="field__control">
+                <input
+                  id="cadence"
+                  name="cadence"
+                  type="number"
+                  min="1"
+                  step="1"
+                  inputmode="numeric"
+                  value="180"
+                />
+                <span class="field__unit">steps / min</span>
+              </div>
+            </div>
+
+            <div class="field">
+              <div class="field__header">
+                <label for="stride">Stride length</label>
+                <button type="button" class="btn btn--ghost" data-reset="stride">Reset</button>
+              </div>
+              <div class="field__control">
+                <input
+                  id="stride"
+                  name="stride"
+                  type="number"
+                  min="0.01"
+                  step="0.01"
+                  inputmode="decimal"
+                  value="1.39"
+                />
+                <span class="field__unit">metres</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="actions">
+            <button type="button" class="btn btn--primary" id="reset-all">Reset All</button>
+          </div>
+        </section>
+
+        <section class="advice" aria-labelledby="advice-heading" aria-live="polite">
+          <h2 id="advice-heading" class="advice__title">Training advice</h2>
+          <div class="advice__body" id="advice-body">
+            <p id="advice-summary"></p>
+            <h3 class="advice__subtitle">Training Goals</h3>
+            <ol class="advice__goals">
+              <li id="advice-goal-1"></li>
+              <li id="advice-goal-2"></li>
+            </ol>
+            <p class="advice__tip" id="advice-tip"></p>
+          </div>
+        </section>
+      </div>
+
+      <section class="presets" aria-labelledby="presets-heading">
+        <div class="presets__intro">
+          <h2 id="presets-heading" class="presets__title">Race presets</h2>
+          <p class="presets__lede">
+            Pick a common distance and a slow, medium, or fast recreational target time.
+            Times reflect everyday club and road runners — not elites.
+          </p>
+        </div>
+        <div class="presets__scroll" role="region" aria-label="Race distance and target time presets" tabindex="0">
+          <table class="presets__table" id="presets-table">
+            <thead>
+              <tr>
+                <th scope="col">Race</th>
+                <th scope="col">Distance</th>
+                <th scope="col">Slow</th>
+                <th scope="col">Medium</th>
+                <th scope="col">Fast</th>
+              </tr>
+            </thead>
+            <tbody id="presets-body"></tbody>
+          </table>
+        </div>
+      </section>
+    </main>
+
+    <script src="app.js"></script>
+  </body>
+</html>
